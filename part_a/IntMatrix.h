@@ -24,7 +24,7 @@ namespace mtm {
          * If init_number is missing, the elements are initialized to 0.
          */ 
         explicit IntMatrix(mtm::Dimensions dim, int init_number = 0);
-
+        
         /*
          * Copy Constructor: IntMatrix
          * Usage: IntMatrix new_matrix(matrix);
@@ -128,6 +128,82 @@ namespace mtm {
         IntMatrix operator>=(int number) const;
         IntMatrix operator==(int number) const;
         IntMatrix operator!=(int number) const;
+
+        /*
+         * Iterator support
+         */
+        template<typename ITERATOR_T, typename TYPE>
+        class _iterator
+        {
+        /*********************************/
+        /*        Private Section        */
+        /*********************************/
+        /* Instance variables */
+        ITERATOR_T* matrix;
+        int index;
+        
+        
+        _iterator(ITERATOR_T* matrix, int index);
+        /*
+         Access to the ctor of this template iterator class should be
+         limited to the IntMatrix class.
+         */
+        friend class IntMatrix;
+        
+        public:
+          /*
+         * Copy Constructor: _iterator 
+         * Usage: iterator new_iterator(it);
+         *        const_iterator new_iterator = it;
+         * ---------------------------------------
+         * Copies an existing iterator.
+         */
+        _iterator(_iterator& it);
+        // mtm::IntMatrix::_iterator<HAHA, noob> it = it1; @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        
+        /*
+         * Operator: =
+         * Usage: it1 = it2;
+         * ----------------------
+         * Replaces the instance variables of it1 to the 
+         * instance variables of it2
+         */
+        _iterator& operator=(_iterator it);
+        /*
+         * Operator: ++
+         * Usage: it++;
+         *        ++it;
+         * ----------------------
+         * Increments the iterator by 1. (According to ++ conventions)
+         */
+        _iterator& operator++();
+        _iterator operator++(int);
+        
+        /*
+         * Operator: *
+         * Usage: *it;
+         * ----------------------
+         * Returns the value of the IntMatrix that is currently being pointed at.
+         */
+        TYPE operator*();
+        
+
+        /*
+         * Operator: ==, !=
+         * Usage: it1 == it2
+         *        it1 != it2
+         * ----------------------
+         * Returns a bool value that determines whether it1 is equal to it2 (true or false
+         * according to the used operator).
+         */
+        bool operator==(_iterator it);
+        bool operator!=(_iterator it);
+
+        };
+
+        /* For the clarity of the code and prevent code duplication */
+        typedef _iterator<IntMatrix, int> iterator;
+        typedef _iterator<const IntMatrix, const int> const_iterator;
     };
     /**************************************/
     /*    Operator definition section     */
@@ -159,7 +235,7 @@ namespace mtm {
      * Prints the matrix in a formatted template to the output channel.
      */
     std::ostream& operator<<(std::ostream& out, const IntMatrix& matrix);
-    
+
 
     /**************************************/
     /*    Function definition section     */
