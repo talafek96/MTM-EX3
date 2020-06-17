@@ -42,6 +42,13 @@ namespace mtm {
          */
         virtual ~IntMatrix();
 
+        /*
+         * Function: Identity
+         * Usage: IntMatrix I = Identity(dim);
+         * -----------------------------------
+         * Returns an identity matrix of dimension (dim x dim).
+         */
+        static IntMatrix Identity(int dim);
 
         /*
          * Method: height
@@ -249,14 +256,6 @@ namespace mtm {
      * do not equal 0.
      */
     bool all(const IntMatrix& matrix);
-
-    /*
-     * Function: Identity
-     * Usage: IntMatrix I = Identity(dim);
-     * -----------------------------------
-     * Returns an identity matrix of dimension (dim x dim).
-     */
-    IntMatrix Identity(int dim);
 
     /*
      * Function: any
