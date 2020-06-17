@@ -1,3 +1,5 @@
+#ifndef _INT_MATRIX
+#define _INT_MATRIX
 #include <iostream>
 #include "Auxiliaries.h"
 
@@ -266,3 +268,4 @@ namespace mtm {
      */
     bool any(const IntMatrix& matrix);
 }
+#endif
