@@ -198,7 +198,6 @@ namespace mtm {
          * Returns the value of the IntMatrix that is currently being pointed at.
          */
         TYPE& operator*();
-        TYPE& operator*() const; //In the case that TYPE is a const type.
         
 
         /*
