@@ -58,7 +58,7 @@ namespace mtm {
          * -----------------------------------
          * Returns the number of rows (height) of the matrix.
          */
-        int height();
+        int height() const;
         
         /*
          * Method: width
@@ -66,7 +66,7 @@ namespace mtm {
          * -----------------------------------
          * Returns the number of columns (width) of the matrix.
          */
-        int width();
+        int width() const;
         
         /*
          * Method: size
@@ -74,7 +74,7 @@ namespace mtm {
          * -----------------------------------
          * Returns the number of elements in the matrix.
          */
-        int size();
+        int size() const;
 
         /*
          * Method: transpose
@@ -153,25 +153,24 @@ namespace mtm {
         
         
         _iterator(ITERATOR_T* matrix, int index);
+        friend class IntMatrix;
         /*
          Access to the ctor of this template iterator class should be
          limited to the IntMatrix class.
          */
-        friend class IntMatrix;
 
         /*********************************/
         /*         Public Section        */
         /*********************************/
         public:
-          /*
+        /*
          * Copy Constructor: _iterator 
          * Usage: iterator new_iterator(it);
          *        const_iterator new_iterator = it;
          * ---------------------------------------
          * Copies an existing iterator.
          */
-        _iterator(_iterator& it);
-        // mtm::IntMatrix::_iterator<HAHA, noob> it = it1; @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        _iterator(_iterator& it) : matrix(it.matrix), index(it.index) { }
         
         /*
          * Operator: =
