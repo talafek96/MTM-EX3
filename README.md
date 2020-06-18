@@ -44,15 +44,15 @@
 ### Methods
 - [x] explicit IntMatrix(mtm::Dimensions dim, int init_number = 0);
 
-- [ ] virtual ~IntMatrix();
+- [x] virtual ~IntMatrix();
 
-- [ ] int width();
+- [x] int width();
 
-- [ ] IntMatrix transpose();
+- [x] IntMatrix transpose();
 
-- [ ] iterator end();
+- [x] iterator end();
 
-- [ ] const_iterator end() const;
+- [x] const_iterator end() const;
 
 
 
@@ -75,7 +75,7 @@
 
 
 ### Iterators
-- [ ] _iterator(_iterator& it);
+- [x] _iterator(_iterator& it);
 
 - [ ] _iterator& operator=(_iterator it);
 
