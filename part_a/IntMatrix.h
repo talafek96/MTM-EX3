@@ -3,8 +3,8 @@
 #include <iostream>
 #include "Auxiliaries.h"
 
-namespace mtm { 
-    class IntMatrix 
+namespace mtm {
+    class IntMatrix
     {
         /*********************************/
         /*        Private Section        */
@@ -213,6 +213,11 @@ namespace mtm {
         /* For the clarity of the code and prevent code duplication */
         typedef _iterator<IntMatrix, int> iterator;
         typedef _iterator<const IntMatrix, const int> const_iterator;
+
+        iterator begin();
+        const_iterator begin() const;
+        iterator end();
+        const_iterator end() const;
     };
     /**************************************/
     /*    Operator definition section     */

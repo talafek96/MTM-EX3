@@ -7,6 +7,15 @@
 
 - [ ] int size();
 
+- [ ] iterator begin();
+
+- [ ] const_iterator begin() const;
+
+- [ ] _iterator& operator++();
+
+- [ ] _iterator operator++(int);
+
+
 
 ### Operators
 - [ ] IntMatrix& operator=(const IntMatrix& target_matrix);
@@ -19,15 +28,15 @@
 
 - [ ] IntMatrix operator+(int number, const IntMatrix& matrix);
 
+
 ### Functions
 - [ ] bool all(const IntMatrix& matrix);
+
 
 ### Iterators
 - [ ] _iterator(ITERATOR_T* matrix, int index);
 
-- [ ] _iterator& operator++();
 
-- [ ] _iterator operator++(int);
 
 
 ## ______________________________
@@ -40,6 +49,11 @@
 - [ ] int width();
 
 - [ ] IntMatrix transpose();
+
+- [ ] iterator end();
+
+- [ ] const_iterator end() const;
+
 
 
 ### Operators
