@@ -1,19 +1,15 @@
 # To Do List
 ## Berko
 ### Methods
-- [x] IntMatrix(IntMatrix& matrix);
+- [ ] IntMatrix(IntMatrix& matrix);
 
-- [x] int height();
+- [ ] int height();
 
-- [x] int size();
+- [ ] int size();
 
 - [x] iterator begin();
 
 - [x] const_iterator begin() const;
-
-- [x] _iterator& operator++();
-
-- [x] _iterator operator++(int);
 
 
 
@@ -35,6 +31,11 @@
 
 ### Iterators
 - [x] _iterator(ITERATOR_T* matrix, int index);
+
+- [x] _iterator& operator++();
+
+- [x] _iterator operator++(int);
+
 
 
 

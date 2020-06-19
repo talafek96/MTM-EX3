@@ -152,7 +152,7 @@ namespace mtm {
             int index;
             
             
-            _iterator(MATRIX_T* matrix, int index);
+            _iterator(MATRIX_T* matrix, int index) : matrix(matrix), index(index) {};
             friend class IntMatrix;
             /*
             Access to the ctor of this template iterator class should be
@@ -170,7 +170,7 @@ namespace mtm {
              * ---------------------------------------
              * Copies an existing iterator.
              */
-            _iterator(_iterator& it) : matrix(it.matrix), index(it.index) { }
+            _iterator(const _iterator& it) : matrix(it.matrix), index(it.index) { }
             
             /*
              * Operator: =
@@ -187,8 +187,17 @@ namespace mtm {
              * ----------------------
              * Increments the iterator by 1. (According to ++ conventions)
              */
-            _iterator& operator++();
-            _iterator operator++(int);
+            _iterator& operator++()
+            {
+                index++;
+                return *this;
+            }
+            _iterator operator++(int)
+            {
+                IntMatrix::_iterator<typename MATRIX_T, typename TYPE> temp_iterator = *this;
+                index++;
+                return temp_iterator;
+            }
             
             /*
              * Operator: *
@@ -283,28 +292,5 @@ namespace mtm {
      * in the matrix that is different than 0.
      */
     bool any(const IntMatrix& matrix);
-
-    /*********************/
-    /* Berko's iterators */
-    /*********************/
-    template<typename ITERATOR_T, typename TYPE>
-    IntMatrix::_iterator<ITERATOR_T, TYPE>::_iterator<ITERATOR_T, TYPE>(ITERATOR_T* matrix, int index) :
-    matrix(matrix), index(index) {};
-
-    template<typename ITERATOR_T, typename TYPE>
-    IntMatrix::_iterator<typename ITERATOR_T, typename TYPE>& IntMatrix::_iterator<typename ITERATOR_T, typename TYPE>::operator++()
-    {
-        index++;
-        return *this;
-    }
-
-    template<typename ITERATOR_T, typename TYPE>
-    IntMatrix::_iterator<typename ITERATOR_T, typename TYPE> IntMatrix::_iterator<typename ITERATOR_T, typename TYPE>::operator++(int)
-    {
-        IntMatrix::_iterator<typename ITERATOR_T, typename TYPE> temp_iterator = *this;
-        index++;
-        return temp_iterator;
-    }
-
 }
 #endif 

@@ -57,6 +57,22 @@ bool all(const IntMatrix& matrix)
 /*****************************************/
 /*   Operators implementation section    */
 /*****************************************/
+IntMatrix& IntMatrix::operator=(const IntMatrix& target_matrix)
+{
+    if (this == &target_matrix)
+    {
+        return *this;
+    }
+    dimensions = target_matrix.dimensions;
+    delete[] elements;
+    elements = new int[target_matrix.size()];
+    for (int i = 0; i < target_matrix.size(); i++)
+    {
+        elements[i] = target_matrix.elements[i];
+    }
+    return *this;
+}
+
 IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2)
 {
     Dimensions new_dim(matrix1.height(), matrix1.width());
@@ -119,20 +135,4 @@ IntMatrix::const_iterator IntMatrix::end() const
 { 
     IntMatrix::const_iterator it(this, size() - 1);
     return it;
-}
-
-IntMatrix& IntMatrix::operator=(const IntMatrix& target_matrix)
-{
-    if (this == &target_matrix)
-    {
-        return *this;
-    }
-    dimensions = target_matrix.dimensions;
-    delete[] elements;
-    elements = new int[target_matrix.size()];
-    for (int i = 0; i < target_matrix.size(); i++)
-    {
-        elements[i] = target_matrix.elements[i];
-    }
-    return *this;
 }
