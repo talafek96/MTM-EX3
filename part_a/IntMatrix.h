@@ -35,7 +35,7 @@ namespace mtm {
          * Initializes a new IntMatrix.  
          * Creates a new matrix that is a copy of matrix.
          */
-        IntMatrix(IntMatrix& matrix);
+        IntMatrix(const IntMatrix& matrix);
 
         /*
          * Destructor: ~IntMatrix
@@ -225,12 +225,21 @@ namespace mtm {
     /*    Operator definition section     */
     /**************************************/
     /*
+     * Operator: ==
+     * Usage: matrix1 == matrix2
+     * ----------------------
+     * Returns true if and only if matrix1 and matrix2 heve the
+     * same dimensions and the same elements. 
+     */
+    bool operator==(const IntMatrix& matrix1, const IntMatrix& matrix2);
+
+    /*
      * Operator: +
      * Usage: matrix + number (interchangeable)
      *        matrix1 + matrix2
      * ----------------------
      * Adds number to every single element in the matrix.
-     * Or, performs a classic matrix addition.
+     * Or performs a classic matrix addition.
      */
     IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
     IntMatrix operator+(const IntMatrix& matrix, int number);
@@ -274,5 +283,28 @@ namespace mtm {
      * in the matrix that is different than 0.
      */
     bool any(const IntMatrix& matrix);
+
+    /*********************/
+    /* Berko's iterators */
+    /*********************/
+    template<typename ITERATOR_T, typename TYPE>
+    IntMatrix::_iterator<ITERATOR_T, TYPE>::_iterator<ITERATOR_T, TYPE>(ITERATOR_T* matrix, int index) :
+    matrix(matrix), index(index) {};
+
+    template<typename ITERATOR_T, typename TYPE>
+    IntMatrix::_iterator<typename ITERATOR_T, typename TYPE>& IntMatrix::_iterator<typename ITERATOR_T, typename TYPE>::operator++()
+    {
+        index++;
+        return *this;
+    }
+
+    template<typename ITERATOR_T, typename TYPE>
+    IntMatrix::_iterator<typename ITERATOR_T, typename TYPE> IntMatrix::_iterator<typename ITERATOR_T, typename TYPE>::operator++(int)
+    {
+        IntMatrix::_iterator<typename ITERATOR_T, typename TYPE> temp_iterator = *this;
+        index++;
+        return temp_iterator;
+    }
+
 }
 #endif
