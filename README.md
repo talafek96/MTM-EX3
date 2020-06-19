@@ -1,40 +1,40 @@
 # To Do List
 ## Berko
 ### Methods
-- [ ] IntMatrix(IntMatrix& matrix);
+- [x] IntMatrix(IntMatrix& matrix);
 
-- [ ] int height();
+- [x] int height();
 
-- [ ] int size();
+- [x] int size();
 
-- [ ] iterator begin();
+- [x] iterator begin();
 
-- [ ] const_iterator begin() const;
+- [x] const_iterator begin() const;
 
-- [ ] _iterator& operator++();
+- [x] _iterator& operator++();
 
-- [ ] _iterator operator++(int);
+- [x] _iterator operator++(int);
 
 
 
 ### Operators
-- [ ] IntMatrix& operator=(const IntMatrix& target_matrix);
+- [x] IntMatrix& operator=(const IntMatrix& target_matrix);
 
-- [ ] IntMatrix& operator+=(int number);
+- [x] IntMatrix& operator+=(int number);
 
-- [ ] IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
+- [x] IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
 
-- [ ] IntMatrix operator+(const IntMatrix& matrix, int number);
+- [x] IntMatrix operator+(const IntMatrix& matrix, int number);
 
-- [ ] IntMatrix operator+(int number, const IntMatrix& matrix);
+- [x] IntMatrix operator+(int number, const IntMatrix& matrix);
 
 
 ### Functions
-- [ ] bool all(const IntMatrix& matrix);
+- [x] bool all(const IntMatrix& matrix);
 
 
 ### Iterators
-- [ ] _iterator(ITERATOR_T* matrix, int index);
+- [x] _iterator(ITERATOR_T* matrix, int index);
 
 
 
