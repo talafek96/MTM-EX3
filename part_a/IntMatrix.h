@@ -141,74 +141,74 @@ namespace mtm {
         /*
          * Iterator support
          */
-        template<typename ITERATOR_T, typename TYPE>
+        template<typename MATRIX_T, typename TYPE>
         class _iterator
         {
-        /*********************************/
-        /*        Private Section        */
-        /*********************************/
-        /* Instance variables */
-        ITERATOR_T* matrix;
-        int index;
-        
-        
-        _iterator(ITERATOR_T* matrix, int index);
-        friend class IntMatrix;
-        /*
-         Access to the ctor of this template iterator class should be
-         limited to the IntMatrix class.
-         */
+            /*********************************/
+            /*        Private Section        */
+            /*********************************/
+            /* Instance variables */
+            MATRIX_T* matrix;
+            int index;
+            
+            
+            _iterator(MATRIX_T* matrix, int index);
+            friend class IntMatrix;
+            /*
+            Access to the ctor of this template iterator class should be
+            limited to the IntMatrix class.
+            */
 
-        /*********************************/
-        /*         Public Section        */
-        /*********************************/
-        public:
-        /*
-         * Copy Constructor: _iterator 
-         * Usage: iterator new_iterator(it);
-         *        const_iterator new_iterator = it;
-         * ---------------------------------------
-         * Copies an existing iterator.
-         */
-        _iterator(_iterator& it) : matrix(it.matrix), index(it.index) { }
-        
-        /*
-         * Operator: =
-         * Usage: it1 = it2;
-         * ----------------------
-         * Replaces the instance variables of it1 to the 
-         * instance variables of it2
-         */
-        _iterator& operator=(_iterator it);
-        /*
-         * Operator: ++
-         * Usage: it++;
-         *        ++it;
-         * ----------------------
-         * Increments the iterator by 1. (According to ++ conventions)
-         */
-        _iterator& operator++();
-        _iterator operator++(int);
-        
-        /*
-         * Operator: *
-         * Usage: *it;
-         * ----------------------
-         * Returns the value of the IntMatrix that is currently being pointed at.
-         */
-        TYPE& operator*();
-        
+            /*********************************/
+            /*         Public Section        */
+            /*********************************/
+            public:
+            /*
+             * Copy Constructor: _iterator 
+             * Usage: iterator new_iterator(it);
+             *        const_iterator new_iterator = it;
+             * ---------------------------------------
+             * Copies an existing iterator.
+             */
+            _iterator(_iterator& it) : matrix(it.matrix), index(it.index) { }
+            
+            /*
+             * Operator: =
+             * Usage: it1 = it2;
+             * ----------------------
+             * Replaces the instance variables of it1 to the 
+             * instance variables of it2
+             */
+            _iterator& operator=(_iterator it);
+            /*
+             * Operator: ++
+             * Usage: it++;
+             *        ++it;
+             * ----------------------
+             * Increments the iterator by 1. (According to ++ conventions)
+             */
+            _iterator& operator++();
+            _iterator operator++(int);
+            
+            /*
+             * Operator: *
+             * Usage: *it;
+             * ----------------------
+             * Returns the value of the IntMatrix that is currently being pointed at.
+             */
+            TYPE& operator*();
+            
 
-        /*
-         * Operator: ==, !=
-         * Usage: it1 == it2
-         *        it1 != it2
-         * ----------------------
-         * Returns a bool value that determines whether it1 is equal to it2 (true or false
-         * according to the used operator).
-         */
-        bool operator==(_iterator it);
-        bool operator!=(_iterator it);
+            /*
+             * Operator: ==, !=
+             * Usage: it1 == it2
+             *        it1 != it2
+             * ----------------------
+             * Returns a bool value that determines whether it1 is equal to it2 (true or false
+             * according to the used operator).
+             */
+            bool operator==(_iterator it);
+            bool operator!=(_iterator it);
 
         };
 
@@ -275,4 +275,4 @@ namespace mtm {
      */
     bool any(const IntMatrix& matrix);
 }
-#endif
+#endif 
