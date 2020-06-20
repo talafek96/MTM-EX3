@@ -105,6 +105,7 @@ namespace mtm {
          */
         IntMatrix operator-() const;
 
+
         /*
          * Operator: +=
          * Usage: matrix += number.
@@ -138,6 +139,14 @@ namespace mtm {
         IntMatrix operator==(int number) const;
         IntMatrix operator!=(int number) const;
 
+        /*
+         * Operator: <<
+         * Usage: ostream& out << IntMatrix matrix
+         * ------------------------
+         * Prints the matrix in a formatted template to the output channel.
+         */
+        friend std::ostream& operator<<(std::ostream& out, const IntMatrix& matrix);
+        
         /*
          * Iterator support
          */
@@ -261,14 +270,6 @@ namespace mtm {
      * Performs a substraction of both matrices and returns a copy of the result.
      */
     IntMatrix operator-(const IntMatrix& matrix1, const IntMatrix& matrix2);
-    
-    /*
-     * Operator: <<
-     * Usage: ostream& out << IntMatrix matrix
-     * ------------------------
-     * Prints the matrix in a formatted template to the output channel.
-     */
-    std::ostream& operator<<(std::ostream& out, const IntMatrix& matrix);
 
 
     /**************************************/

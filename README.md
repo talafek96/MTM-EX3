@@ -58,21 +58,21 @@
 
 
 ### Operators
-- [ ] IntMatrix operator-() const;
+- [x] IntMatrix operator-() const;
 
-- [ ] int& operator()(int row, int col);
+- [x] int& operator()(int row, int col);
 
-- [ ] const int& operator()(int row, int col) const;
+- [x] const int& operator()(int row, int col) const;
 
-- [ ] IntMatrix operator-(const IntMatrix& matrix1, const IntMatrix& matrix2);
+- [x] IntMatrix operator-(const IntMatrix& matrix1, const IntMatrix& matrix2);
 
-- [ ] std::ostream& operator<<(std::ostream& out, const IntMatrix& matrix);
+- [x] std::ostream& operator<<(std::ostream& out, const IntMatrix& matrix);
 
 
 ### Functions
-- [ ] static IntMatrix Identity(int dim);
+- [x] static IntMatrix Identity(int dim);
 
-- [ ] bool any(const IntMatrix& matrix);
+- [x] bool any(const IntMatrix& matrix);
 
 
 ### Iterators
