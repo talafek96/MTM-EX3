@@ -35,7 +35,7 @@ namespace mtm {
          * Initializes a new IntMatrix.  
          * Creates a new matrix that is a copy of matrix.
          */
-        IntMatrix(IntMatrix& matrix);
+        IntMatrix(const IntMatrix& matrix);
 
         /*
          * Destructor: ~IntMatrix
@@ -105,6 +105,7 @@ namespace mtm {
          */
         IntMatrix operator-() const;
 
+
         /*
          * Operator: +=
          * Usage: matrix += number.
@@ -139,6 +140,14 @@ namespace mtm {
         IntMatrix operator!=(int number) const;
 
         /*
+         * Operator: <<
+         * Usage: ostream& out << IntMatrix matrix
+         * ------------------------
+         * Prints the matrix in a formatted template to the output channel.
+         */
+        friend std::ostream& operator<<(std::ostream& out, const IntMatrix& matrix);
+        
+        /*
          * Iterator support
          */
         template<typename MATRIX_T, typename TYPE>
@@ -152,7 +161,7 @@ namespace mtm {
             int index;
             
             
-            _iterator(MATRIX_T* matrix, int index);
+            _iterator(MATRIX_T* matrix, int index) : matrix(matrix), index(index) {};
             friend class IntMatrix;
             /*
             Access to the ctor of this template iterator class should be
@@ -170,7 +179,7 @@ namespace mtm {
              * ---------------------------------------
              * Copies an existing iterator.
              */
-            _iterator(_iterator& it) : matrix(it.matrix), index(it.index) { }
+            _iterator(const _iterator& it) : matrix(it.matrix), index(it.index) { }
             
             /*
              * Operator: =
@@ -187,8 +196,17 @@ namespace mtm {
              * ----------------------
              * Increments the iterator by 1. (According to ++ conventions)
              */
-            _iterator& operator++();
-            _iterator operator++(int);
+            _iterator& operator++()
+            {
+                index++;
+                return *this;
+            }
+            _iterator operator++(int)
+            {
+                IntMatrix::_iterator<typename MATRIX_T, typename TYPE> temp_iterator = *this;
+                index++;
+                return temp_iterator;
+            }
             
             /*
              * Operator: *
@@ -225,12 +243,21 @@ namespace mtm {
     /*    Operator definition section     */
     /**************************************/
     /*
+     * Operator: ==
+     * Usage: matrix1 == matrix2
+     * ----------------------
+     * Returns true if and only if matrix1 and matrix2 heve the
+     * same dimensions and the same elements. 
+     */
+    bool operator==(const IntMatrix& matrix1, const IntMatrix& matrix2);
+
+    /*
      * Operator: +
      * Usage: matrix + number (interchangeable)
      *        matrix1 + matrix2
      * ----------------------
      * Adds number to every single element in the matrix.
-     * Or, performs a classic matrix addition.
+     * Or performs a classic matrix addition.
      */
     IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
     IntMatrix operator+(const IntMatrix& matrix, int number);
@@ -243,14 +270,6 @@ namespace mtm {
      * Performs a substraction of both matrices and returns a copy of the result.
      */
     IntMatrix operator-(const IntMatrix& matrix1, const IntMatrix& matrix2);
-    
-    /*
-     * Operator: <<
-     * Usage: ostream& out << IntMatrix matrix
-     * ------------------------
-     * Prints the matrix in a formatted template to the output channel.
-     */
-    std::ostream& operator<<(std::ostream& out, const IntMatrix& matrix);
 
 
     /**************************************/
