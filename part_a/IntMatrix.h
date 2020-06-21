@@ -209,7 +209,7 @@ namespace mtm {
 
             _iterator operator++(int)
             {
-                IntMatrix::_iterator<typename MATRIX_T, typename TYPE> temp_iterator = *this;
+                _iterator temp_iterator = *this;
                 index++;
                 return temp_iterator;
             }
