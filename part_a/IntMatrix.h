@@ -82,7 +82,7 @@ namespace mtm {
          * -----------------------------------
          * Returns the number of elements in the matrix.
          */
-        IntMatrix transpose();
+        IntMatrix transpose() const;
         
         /**************************************/
         /*    Operator definition section     */

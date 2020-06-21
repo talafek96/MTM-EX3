@@ -45,10 +45,10 @@ namespace mtm
     
     int IntMatrix::size() const 
     {
-        return (size() * width());
+        return (height() * width());
     }
 
-    IntMatrix IntMatrix::transpose()
+    IntMatrix IntMatrix::transpose() const
     {
         Dimensions transpose_dim(width(), height());
         IntMatrix transpose(transpose_dim);
@@ -134,7 +134,7 @@ namespace mtm
 
     const int& IntMatrix::operator()(int row, int col) const
     {
-        return (*this)(row, col);
+        return *(elements + row * IntMatrix::width() + col);
     }
 
     IntMatrix operator-(const IntMatrix& matrix1, const IntMatrix& matrix2)
@@ -256,13 +256,13 @@ namespace mtm
 
     IntMatrix::iterator IntMatrix::end()
     {
-        IntMatrix::iterator it(this, size() - 1);
+        IntMatrix::iterator it(this, size());
         return it;
     }
 
     IntMatrix::const_iterator IntMatrix::end() const
     { 
-        IntMatrix::const_iterator it(this, size() - 1);
+        IntMatrix::const_iterator it(this, size());
         return it;
     }
 }
