@@ -1,11 +1,11 @@
 # To Do List
 ## Berko
 ### Methods
-- [ ] IntMatrix(IntMatrix& matrix);
+- [x] IntMatrix(IntMatrix& matrix);
 
-- [ ] int height();
+- [x] int height();
 
-- [ ] int size();
+- [x] int size();
 
 - [x] iterator begin();
 
@@ -82,9 +82,9 @@
 
 - [x] TYPE operator*();
 
-- [ ] bool operator==(_iterator it);
+- [x] bool operator==(_iterator it);
 
-- [ ] bool operator!=(_iterator it);
+- [x] bool operator!=(_iterator it);
 
 
 ## ______________________________

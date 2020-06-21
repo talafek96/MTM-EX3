@@ -226,10 +226,13 @@ namespace mtm {
                 {
                     return *(matrix->elements + matrix->size() - 1); //Return the last element of the matrix
                 }
+                if(index < 0)
+                {
+                    return *(matrix->elements);
+                }
                 return *(matrix->elements + index);
             }
             
-
             /*
              * Operator: ==, !=
              * Usage: it1 == it2
@@ -238,11 +241,17 @@ namespace mtm {
              * Returns a bool value that determines whether it1 is equal to it2 (true or false
              * according to the used operator).
              */
-            bool operator==(_iterator it);
-            bool operator!=(_iterator it);
-
+            bool operator==(_iterator it)
+            {
+                return (index == it.index) && (matrix == it.matrix);
+            }
+            
+            bool operator!=(_iterator it)
+            {
+                return !(*this == it);
+            }
         };
-
+        
         /* For the clarity of the code and prevent code duplication */
         typedef _iterator<IntMatrix, int> iterator;
         typedef _iterator<const IntMatrix, const int> const_iterator;

@@ -5,16 +5,6 @@ namespace mtm
     /*****************************************/
     /*   Ctor/Dtor implementation section    */
     /*****************************************/
-    IntMatrix::IntMatrix(const IntMatrix& matrix) :
-    dimensions(matrix.height(),matrix.width())
-    {
-        elements = new int[matrix.size()];
-        for (int i=0; i<matrix.size(); i++)
-        {
-            elements[i] = (matrix.elements)[i];
-        }
-    }
-
     IntMatrix::IntMatrix(Dimensions dim, int init_number) :
     dimensions(dim)
     {
@@ -25,10 +15,21 @@ namespace mtm
         }
     };
 
+    IntMatrix::IntMatrix(const IntMatrix& matrix) :
+    dimensions(matrix.height(),matrix.width())
+    {
+        elements = new int[matrix.size()];
+        for (int i=0; i<matrix.size(); i++)
+        {
+            elements[i] = (matrix.elements)[i];
+        }
+    }
+
     IntMatrix::~IntMatrix()
     {
         delete[] elements;
     }
+
     /*****************************************/
     /*    Methods implementation section     */
     /*****************************************/
@@ -46,7 +47,6 @@ namespace mtm
     {
         return (size() * width());
     }
-
 
     IntMatrix IntMatrix::transpose()
     {
@@ -116,6 +116,7 @@ namespace mtm
         }
         return *this;
     }
+
     IntMatrix IntMatrix::operator-() const
     {
         IntMatrix negative = *this;
