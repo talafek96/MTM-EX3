@@ -5,6 +5,26 @@ namespace mtm
     /*****************************************/
     /*   Ctor/Dtor implementation section    */
     /*****************************************/
+    IntMatrix::IntMatrix(const IntMatrix& matrix) :
+    dimensions(matrix.height(),matrix.width())
+    {
+        elements = new int[matrix.size()];
+        for (int i=0; i<matrix.size(); i++)
+        {
+            elements[i] = (matrix.elements)[i];
+        }
+    }
+
+    int IntMatrix::height() const 
+    {
+        return dimensions.getRow();
+    }
+    
+    int IntMatrix::size() const 
+    {
+        return (size() * width());
+    }
+
     IntMatrix::IntMatrix(Dimensions dim, int init_number) :
     dimensions(dim)
     {
