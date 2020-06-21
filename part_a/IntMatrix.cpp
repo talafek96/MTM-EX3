@@ -15,16 +15,6 @@ namespace mtm
         }
     }
 
-    int IntMatrix::height() const 
-    {
-        return dimensions.getRow();
-    }
-    
-    int IntMatrix::size() const 
-    {
-        return (size() * width());
-    }
-
     IntMatrix::IntMatrix(Dimensions dim, int init_number) :
     dimensions(dim)
     {
@@ -46,6 +36,17 @@ namespace mtm
     {
         return this->dimensions.getCol();
     }
+
+    int IntMatrix::height() const 
+    {
+        return dimensions.getRow();
+    }
+    
+    int IntMatrix::size() const 
+    {
+        return (size() * width());
+    }
+
 
     IntMatrix IntMatrix::transpose()
     {
