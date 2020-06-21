@@ -188,7 +188,12 @@ namespace mtm {
              * Replaces the instance variables of it1 to the 
              * instance variables of it2
              */
-            _iterator& operator=(_iterator it);
+            _iterator& operator=(_iterator& it)
+            {
+                *this = _iterator(it);
+                return *this;
+            }
+
             /*
              * Operator: ++
              * Usage: it++;
@@ -201,6 +206,7 @@ namespace mtm {
                 index++;
                 return *this;
             }
+
             _iterator operator++(int)
             {
                 IntMatrix::_iterator<typename MATRIX_T, typename TYPE> temp_iterator = *this;
@@ -214,7 +220,14 @@ namespace mtm {
              * ----------------------
              * Returns the value of the IntMatrix that is currently being pointed at.
              */
-            TYPE& operator*();
+            TYPE& operator*()
+            {
+                if(index >= matrix->size())
+                {
+                    return *(matrix->elements + matrix->size() - 1); //Return the last element of the matrix
+                }
+                return *(matrix->elements + index);
+            }
             
 
             /*

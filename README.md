@@ -78,9 +78,9 @@
 ### Iterators
 - [x] _iterator(_iterator& it);
 
-- [ ] _iterator& operator=(_iterator it);
+- [x] _iterator& operator=(_iterator it);
 
-- [ ] TYPE operator*();
+- [x] TYPE operator*();
 
 - [ ] bool operator==(_iterator it);
 
