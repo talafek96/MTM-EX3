@@ -185,6 +185,60 @@ namespace mtm
         return out;
     }
 
+    IntMatrix IntMatrix::operator<(int number) const
+    {
+        IntMatrix result(dimensions, 0);
+        for(int i = 0 ; i < height(); i++)
+        {
+            for(int j = 0 ; j < width(); j++)
+            {
+                if ((*this)(i,j) < number)
+                {
+                    result(i,j) = 1;
+                }
+            }
+        }
+        return result;
+    }
+
+    IntMatrix IntMatrix::operator<=(int number) const
+    {
+        return (*this < number) + (*this == number);
+    }
+
+    IntMatrix IntMatrix::operator>(int number) const
+    {
+        return 1 + (-(*this <= number));
+    }
+
+    IntMatrix IntMatrix::operator>=(int number) const
+    {
+        return (*this > number) + (*this == number);
+    }
+
+    IntMatrix IntMatrix::operator==(int number) const
+    {
+        IntMatrix result(dimensions, 0);
+        int rows = height();
+        int cols = width();
+        for(int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j < cols; j++)
+            {
+                if((*this)(i, j) == number)
+                {
+                    result(i, j) = 1;
+                }
+            }
+        }
+        return result;
+    }
+    
+    IntMatrix IntMatrix::operator!=(int number) const
+    {
+        return 1 + (-(*this == number));
+    }
+
     /*****************************************/
     /*   Iterators implementation section    */
     /*****************************************/
