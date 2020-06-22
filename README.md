@@ -90,14 +90,14 @@
 ## ______________________________
 ## Together
 ### Operators
-- [ ] IntMatrix operator<(int number) const;
+- [x] IntMatrix operator<(int number) const;
 
-- [ ] IntMatrix operator<=(int number) const;
+- [x] IntMatrix operator<=(int number) const;
 
-- [ ] IntMatrix operator>(int number) const;
+- [x] IntMatrix operator>(int number) const;
 
-- [ ] IntMatrix operator>=(int number) const;
+- [x] IntMatrix operator>=(int number) const;
 
-- [ ] IntMatrix operator==(int number) const;
+- [x] IntMatrix operator==(int number) const;
 
-- [ ] IntMatrix operator!=(int number) const;
+- [x] IntMatrix operator!=(int number) const;
