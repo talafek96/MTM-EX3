@@ -1,0 +1,127 @@
+#ifndef _ARRAY_INC
+#define _ARRAY_INC
+#include <iostream>
+
+namespace mtm
+{
+    template<typename T>
+    class Array
+    {
+    private:
+        /* Instance variables */
+        T* data;
+        int size;
+    public:
+        /*********************************/
+        /*        Public Section        */
+        /*********************************/
+        /*
+         * Constructor: Array<T>
+         * Usage: Array<T> new_aarray(size);
+         * ---------------------------------
+         * Initializes a new Array that stores objects of type <T>.
+         * The max size of the array is constant and cannot be realloced.
+         * 
+         * Possible exceptions:
+         * std::bad_alloc
+         */   
+        explicit Array(int size) : size(size), data(new T[size]) { }
+
+        /*
+         * Copy Constructor: Array<T>
+         * Usage: Array<t> new_array = arr;
+         * --------------------------------
+         * Initializes a new Array.  
+         * Creates a new array that is a copy of arr.
+         * 
+         * Possible exceptions:
+         * No assignment operator to class T, std::bad_aloc
+         */
+        Array(const Array& arr)
+        {
+            size = arr.size();
+            T* new_data = new T[arr.size()];
+            try
+            {
+                for (int i =0 ; i < arr.size(); i++)
+                {
+                    new_data[i] = arr[i];
+                }
+            } catch (...) {
+                delete[] new_data;
+                throw;
+            }
+            data = new_data;
+        }
+        
+        /*
+         * Destructor: ~Array<T>
+         * ---------------------
+         * Frees any heap storage allocated by this array.
+         */
+        ~Array()
+        {
+            delete[] data;
+        }
+
+        /*
+         * Operator: =
+         * Usage: this_array = target_arr;
+         * ----------------------
+         * Replaces every single element in the left hand array to be equal
+         * to target_arr's elements.
+         * 
+         * Possible exceptions:
+         * No assignment operator to class T, std::bad_aloc
+         */
+        Array& operator=(const Array& target_arr)
+        {
+            if (this == &target_arr)
+            {
+                return *this;
+            }
+            T* temp_data = new T[target_arr.size()];
+            try 
+            {
+                for(int i = 0 ; i < target_arr.size(); i++)
+                {
+                    temp_data[i] = target_arr[i];
+                }
+            } catch (...) {
+                delete[] temp_data;
+                throw;
+            }
+
+            delete[] data;
+            data = new_data;
+            return *this;
+        }
+
+        /*
+         * Method: size
+         * Usage: int size = this_arr.size();
+         * -----------------------------------
+         * Returns the number of elements in the array.
+         */
+        int size() const noexcept
+        {
+            return size;
+        }
+
+        /*
+         * Operator: []
+         * Usage: T element = this_arr[index];
+         * ----------------------
+         * Returns the <index> element stored in the array.
+         */
+        T& operator[](int index);
+        {
+            return data[index];
+        }
+        const T& operator[](int index) const
+        {
+            return data[index];
+        }
+    };
+};
+#endif
