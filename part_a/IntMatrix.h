@@ -25,7 +25,7 @@ namespace mtm {
          * Each element in the matrix is initialized to init_number.
          * If init_number is missing, the elements are initialized to 0.
          */ 
-        explicit IntMatrix(mtm::Dimensions dim, int init_number = 0);
+        explicit IntMatrix(const mtm::Dimensions dim, int init_number = 0);
         
         /*
          * Copy Constructor: IntMatrix
@@ -80,7 +80,7 @@ namespace mtm {
          * Method: transpose
          * Usage: IntMatrix matrix_trans = matrix.transpose();
          * -----------------------------------
-         * Returns the number of elements in the matrix.
+         * Returns a new transposed IntMatrix derived from matrix.
          */
         IntMatrix transpose() const;
         
@@ -101,7 +101,6 @@ namespace mtm {
          * Usage: -matrix
          * ----------------------
          * -matrix: Returns a negative copy of the matrix.
-         * matrix1 - matrix2: performs a substraction of both matrices
          */
         IntMatrix operator-() const;
 
@@ -141,7 +140,7 @@ namespace mtm {
 
         /*
          * Operator: <<
-         * Usage: ostream& out << IntMatrix matrix
+         * Usage: std::ostream& out << IntMatrix matrix
          * ------------------------
          * Prints the matrix in a formatted template to the output channel.
          */
@@ -256,6 +255,7 @@ namespace mtm {
         typedef _iterator<IntMatrix, int> iterator;
         typedef _iterator<const IntMatrix, const int> const_iterator;
 
+        
         iterator begin();
         const_iterator begin() const;
         iterator end();
