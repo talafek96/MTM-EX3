@@ -273,7 +273,7 @@ namespace mtm
         class AccessIllegalElement : public Exception
         {
         private:
-            static const char* description = "Mtm matrix error: An attempt to access an illegal element\n";
+            static const char* description[] = "Mtm matrix error: An attempt to access an illegal element\n";
         public:
             AccessIllegalElement() = default;
             virtual ~AccessIllegalElement() = default;
@@ -286,7 +286,7 @@ namespace mtm
         class IllegalInitialization : public Exception
         {
         private:
-            static const char* description = "Mtm matrix error: Illegal initialization values\n";
+            static const char* description[] = "Mtm matrix error: Illegal initialization values\n";
         public:
             IllegalInitialization() = default;
             virtual ~IllegalInitialization() = default;
