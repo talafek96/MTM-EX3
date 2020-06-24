@@ -178,7 +178,7 @@ namespace mtm {
              * ---------------------------------------
              * Copies an existing iterator.
              */
-            _iterator(const _iterator& it) : matrix(it.matrix), index(it.index) { }
+            _iterator(_iterator& it) : matrix(it.matrix), index(it.index) { }
             
             /*
              * Operator: =
@@ -240,12 +240,12 @@ namespace mtm {
              * Returns a bool value that determines whether it1 is equal to it2 (true or false
              * according to the used operator).
              */
-            bool operator==(_iterator it)
+            bool operator==(_iterator& it)
             {
                 return (index == it.index) && (matrix == it.matrix);
             }
             
-            bool operator!=(_iterator it)
+            bool operator!=(_iterator& it)
             {
                 return !(*this == it);
             }
