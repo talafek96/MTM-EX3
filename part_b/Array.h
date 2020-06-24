@@ -10,7 +10,7 @@ namespace mtm
     private:
         /* Instance variables */
         T* data;
-        int size;
+        const int size;
     public:
         /*********************************/
         /*        Public Section        */
@@ -37,9 +37,8 @@ namespace mtm
          * Possible exceptions:
          * No assignment operator to class T, std::bad_aloc
          */
-        Array(const Array& arr)
+        Array(const Array& arr) : size(arr.size())
         {
-            size = arr.size();
             T* new_data = new T[arr.size()];
             try
             {
