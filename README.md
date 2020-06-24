@@ -1,103 +1,108 @@
 # To Do List
-## Berko
 ### Methods
-- [x] IntMatrix(IntMatrix& matrix);
+- [ ] Matrix(const Matrix<T>& matrix);
 
-- [x] int height();
+- [ ] Matrix(const mtm::Dimensions dim, const T init_value = T());
 
-- [x] int size();
+- [ ] virtual ~Matrix();
 
-- [x] iterator begin();
+- [ ] int height() const;
 
-- [x] const_iterator begin() const;
+- [ ] int width() const;
+
+- [ ] int size() const;
+
+- [ ] Matrix transpose() const;
+
+- [ ] Matrix apply(FUNCTOR function);
+
+- [ ] iterator end();
+
+- [ ] const_iterator end() const;
+
+- [ ] iterator begin();
+
+- [ ] const_iterator begin() const;
 
 
 
 ### Operators
-- [x] IntMatrix& operator=(const IntMatrix& target_matrix);
+- [ ] Matrix& operator=(const Matrix<T>& target_matrix);
 
-- [x] IntMatrix& operator+=(int number);
+- [ ] Matrix operator-() const;
 
-- [x] IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
+- [ ] T& operator()(int row, int col);
 
-- [x] IntMatrix operator+(const IntMatrix& matrix, int number);
+- [ ] const T& operator()(int row, int col) const;
 
-- [x] IntMatrix operator+(int number, const IntMatrix& matrix);
+- [ ] Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+
+- [ ] std::ostream& operator<<(std::ostream& out, const Matrix<T>& matrix);
+
+- [ ] Matrix& operator+=(T& value);
+
+- [ ] Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+
+- [ ] Matrix<T> operator+(const Matrix<T>& matrix, const T& value);
+
+- [ ] Matrix<T> operator+(const T& value, const Matrix<T>& matrix);
 
 
 ### Functions
-- [x] bool all(const IntMatrix& matrix);
+- [ ] static Matrix Diagonal(const int dim, const T& diagonal_value) const;
+
+- [ ] bool any(const Matrix<T>& matrix);
+
+- [ ] bool all(const Matrix<T>& matrix);
 
 
 ### Iterators
-- [x] _iterator(ITERATOR_T* matrix, int index);
+- [ ] _iterator(MATRIX_T* matrix, int index)
 
-- [x] _iterator& operator++();
+- [ ] _iterator(_iterator& it)
 
-- [x] _iterator operator++(int);
+- [ ] _iterator& operator=(_iterator& it)
 
+- [ ] TYPE& operator*()
 
+- [ ] bool operator==(_iterator& it)
+
+- [ ] bool operator!=(_iterator& it)
+
+- [ ] _iterator& operator++()
+
+- [ ] _iterator operator++(int)
 
 
 
 ## ______________________________
 ## Tal
+
+## Berko
 ### Methods
-- [x] explicit IntMatrix(mtm::Dimensions dim, int init_number = 0);
-
-- [x] virtual ~IntMatrix();
-
-- [x] int width();
-
-- [x] IntMatrix transpose();
-
-- [x] iterator end();
-
-- [x] const_iterator end() const;
-
 
 
 ### Operators
-- [x] IntMatrix operator-() const;
-
-- [x] int& operator()(int row, int col);
-
-- [x] const int& operator()(int row, int col) const;
-
-- [x] IntMatrix operator-(const IntMatrix& matrix1, const IntMatrix& matrix2);
-
-- [x] std::ostream& operator<<(std::ostream& out, const IntMatrix& matrix);
 
 
 ### Functions
-- [x] static IntMatrix Identity(int dim);
 
-- [x] bool any(const IntMatrix& matrix);
 
 
 ### Iterators
-- [x] _iterator(_iterator& it);
-
-- [x] _iterator& operator=(_iterator it);
-
-- [x] TYPE operator*();
-
-- [x] bool operator==(_iterator it);
-
-- [x] bool operator!=(_iterator it);
 
 
 ## ______________________________
 ## Together
 ### Operators
-- [x] IntMatrix operator<(int number) const;
+- [ ] Matrix<bool> operator<(const T& value) const;
 
-- [x] IntMatrix operator<=(int number) const;
+- [ ] Matrix<bool> operator<=(const T& value) const;
 
-- [x] IntMatrix operator>(int number) const;
+- [ ] Matrix<bool> operator>(const T& value) const;
 
-- [x] IntMatrix operator>=(int number) const;
+- [ ] Matrix<bool> operator>=(const T& value) const;
 
-- [x] IntMatrix operator==(int number) const;
+- [ ] Matrix<bool> operator==(const T& value) const;
 
-- [x] IntMatrix operator!=(int number) const;
+- [ ] Matrix<bool> operator!=(const T& value) const;
