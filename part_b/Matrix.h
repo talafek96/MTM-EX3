@@ -120,7 +120,7 @@ namespace mtm
         /**************************************/
         /*
          * Operator: =
-         * Usage: matrix = matrix
+         * Usage: matrix = target_matrix
          * ----------------------
          * Replaces every single element in the matrix to be equal
          * to the target_matrix's elements.
@@ -185,7 +185,7 @@ namespace mtm
              * ---------------------------------------
              * Copies an existing iterator.
              */
-            _iterator(const _iterator& it) : matrix(it.matrix), index(it.index) { }
+            _iterator(_iterator& it) : matrix(it.matrix), index(it.index) { }
             
             /*
              * Operator: =
@@ -247,12 +247,12 @@ namespace mtm
              * Returns a bool value that determines whether it1 is equal to it2 (true or false
              * according to the used operator).
              */
-            bool operator==(_iterator it)
+            bool operator==(_iterator& it)
             {
                 return (index == it.index) && (matrix == it.matrix);
             }
             
-            bool operator!=(_iterator it)
+            bool operator!=(_iterator& it)
             {
                 return !(*this == it);
             }
@@ -377,7 +377,7 @@ namespace mtm
      * in the matrix that is true when converted to bool type.
      */
     template<typename T>
-    bool any(const Matrix<T> & matrix);
+    bool any(const Matrix<T>& matrix);
 
     class Exception : public std::exception {};
 };
