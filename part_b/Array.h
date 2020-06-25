@@ -10,22 +10,25 @@ namespace mtm
     private:
         /* Instance variables */
         T* data;
-        const int size;
+        int size;
     public:
         /*********************************/
         /*        Public Section        */
         /*********************************/
         /*
          * Constructor: Array<T>
-         * Usage: Array<T> new_aarray(size);
+         * Usage: Array<T> new_array(size);
          * ---------------------------------
          * Initializes a new Array that stores objects of type <T>.
+         * The default constructor creates an empty Array.
+         * The second form creates and allocates an array with size elements.
          * The max size of the array is constant and cannot be realloced.
          * 
          * Possible exceptions:
          * std::bad_alloc
          */   
         explicit Array(int size) : size(size), data(new T[size]) { }
+        Array() : data(nullptr), size = 0 { };
 
         /*
          * Copy Constructor: Array<T>
@@ -113,7 +116,7 @@ namespace mtm
          * ----------------------
          * Returns the <index> element stored in the array.
          */
-        T& operator[](int index);
+        T& operator[](int index)
         {
             return data[index];
         }
