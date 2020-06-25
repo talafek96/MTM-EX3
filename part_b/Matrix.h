@@ -15,7 +15,7 @@ namespace mtm
         /*********************************/
         /* Instance variables */
 
-        T* elements;                 /* A dynamic array of the elements   */
+        Array<T> elements;           /* A dynamic array of the elements   */
         mtm::Dimensions dimensions;  /* The allocated size of the array   */
     public:
         /*
@@ -28,8 +28,27 @@ namespace mtm
          * Each element in the matrix is initialized to init_value.
          * If init_value is missing, the elements are initialized with the
          * default constructor of T.
+         * 
+         * Possible Exceptions:
+         * IllegalInitialization, std::bad_alloc
+         * 
+         * Assumptions on T:
+         * • Has an assignment operator. (=)
+         * • Has a default/no argument constructor
          */ 
-        explicit Matrix(const mtm::Dimensions dim, const T init_value = T());
+        explicit Matrix(const mtm::Dimensions dim, const T& init_value = T())
+        {
+            if (dim.getCol() <= 0 || dim.getRow() <= 0)
+            {
+                throw IllegalInitialization();
+            }
+            elements = Array<T>(size);
+            int size = dim.getCol() * dim.getRow();
+            for(int i = 0; i < size; i++)
+            {
+                elements[i] = init_value;
+            }
+        }
 
         /*
          * Copy Constructor: Matrix<T>
