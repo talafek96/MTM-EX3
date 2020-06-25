@@ -171,6 +171,7 @@ namespace mtm {
             /*         Public Section        */
             /*********************************/
             public:
+            _iterator() = delete;
             /*
              * Copy Constructor: _iterator 
              * Usage: iterator new_iterator(it);
