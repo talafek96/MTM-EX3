@@ -3,9 +3,9 @@
 ### Methods
 - [x] Matrix(const mtm::Dimensions dim, const T init_value = T());
 
-- [ ] int height() const;
+- [x] int height() const;
 
-- [ ] int size() const;
+- [x] int size() const;
 
 - [ ] Matrix transpose() const;
 
