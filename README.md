@@ -1,5 +1,4 @@
 # To Do List
-## ______________________________
 ## Tal
 ### Methods
 - [ ] Matrix(const mtm::Dimensions dim, const T init_value = T());
@@ -46,7 +45,7 @@
 
 - [ ] _iterator operator++(int)
 
-
+## ______________________________
 
 ## Berko
 ### Methods
