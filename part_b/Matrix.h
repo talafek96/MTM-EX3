@@ -30,11 +30,11 @@ namespace mtm
          * default constructor of T.
          * 
          * Possible Exceptions:
-         * IllegalInitialization, std::bad_alloc
+         * Matrix::IllegalInitialization, std::bad_alloc
          * 
          * Assumptions on T:
          * • Has an assignment operator. (=)
-         * • Has a default/no argument constructor
+         * • Has a default/no argument constructor.
          */ 
         explicit Matrix(const mtm::Dimensions dim, const T& init_value = T()) :
         dimensions(dim)
@@ -74,8 +74,28 @@ namespace mtm
          * -----------------------------------
          * Creates a new Matrix<T> of dimensions (dim x dim) with diagonal_value
          * elements initialized in the diagonal.
+         * 
+         * Possible Exceptions:
+         * Matrix::IllegalInitialization, std::bad_alloc
+         * 
+         * Assumptions on T:
+         * • Has an assignment operator. (=)
+         * • Has a default/no argument constructor
          */
-        static Matrix Diagonal(const int dim, const T& diagonal_value) const;
+        static Matrix Diagonal(const int dim, const T& diagonal_value)
+        {
+            if(dim <= 0)
+            {
+                throw IllegalInitialization();
+            }
+            mtm::Dimensions diag_dim(dim, dim);
+            Matrix diag(diag_dim);
+            for(int i = 0; i < dim; i++)
+            {
+                diag(i, i) = diagonal_value;
+            }
+            return diag;
+        }
 
         /*
          * Method: height
@@ -102,7 +122,7 @@ namespace mtm
          * -----------------------------------
          * Returns the number of elements in the matrix.
          */
-        int size() const
+        int size() const noexcept
         {
             return height() * width();
         }
@@ -112,8 +132,27 @@ namespace mtm
          * Usage: Matrix<T> matrix_trans = matrix.transpose();
          * -----------------------------------
          * Returns a new transposed Matrix<T> derived from matrix.
+         * 
+         * Possible Exceptions:
+         * std::bad_alloc
+         * 
+         * Assumptions on T:
+         * • Has an assignment operator. (=)
+         * • Has a default/no argument constructor
          */
-        Matrix transpose() const;
+        Matrix transpose() const
+        {
+            Dimensions transpose_dim(width(), height());
+            Matrix transpose(transpose_dim);
+            for(int i = 0; i < height(); i++)
+            {
+                for(int j = 0; j < width(); j++)
+                {
+                    transpose(j, i) = (*this)(i, j);
+                }
+            }
+            return transpose;
+        }
 
         /*
          * Method: apply
@@ -133,11 +172,72 @@ namespace mtm
          *        matrix == T_value  matrix != T_value
          * ----------------------
          * Returns a matrix with binary values in its cells, according to the evaluated result.
+         * 
+         * Assumptions on T:
+         * • T can be compared using the <bool operator> the client wishes to use.
          */
-        Matrix<bool> operator<(const T& value) const;
-        Matrix<bool> operator<=(const T& value) const;
-        Matrix<bool> operator>(const T& value) const;
-        Matrix<bool> operator>=(const T& value) const;
+        Matrix<bool> operator<(const T& value) const
+        {
+            Matrix<bool> bool_result(this->dimensions, false);
+            for(int i = 0; i < height(); i++)
+            {
+                for(int j = 0; j < width(); j++)
+                {
+                    if((*this)(i, j) < value)
+                    {
+                        bool_result = true;
+                    }
+                }
+            }
+            return bool_result;
+        }
+        Matrix<bool> operator<=(const T& value) const
+        {
+            Matrix<bool> bool_result(this->dimensions, false);
+            for(int i = 0; i < height(); i++)
+            {
+                for(int j = 0; j < width(); j++)
+                {
+                    if((*this)(i, j) <= value)
+                    {
+                        bool_result = true;
+                    }
+                }
+            }
+            return bool_result;
+        }
+
+        Matrix<bool> operator>(const T& value) const
+        {
+            Matrix<bool> bool_result(this->dimensions, false);
+            for(int i = 0; i < height(); i++)
+            {
+                for(int j = 0; j < width(); j++)
+                {
+                    if((*this)(i, j) > value)
+                    {
+                        bool_result = true;
+                    }
+                }
+            }
+            return bool_result;
+        }
+
+        Matrix<bool> operator>=(const T& value) const
+        {
+            Matrix<bool> bool_result(this->dimensions, false);
+            for(int i = 0; i < height(); i++)
+            {
+                for(int j = 0; j < width(); j++)
+                {
+                    if((*this)(i, j) >= value)
+                    {
+                        bool_result = true;
+                    }
+                }
+            }
+            return bool_result;
+        }
         Matrix<bool> operator==(const T& value) const;
         Matrix<bool> operator!=(const T& value) const;
 
@@ -150,8 +250,26 @@ namespace mtm
          * ----------------------
          * Replaces every single element in the matrix to be equal
          * to the target_matrix's elements.
+         * 
+         * Possible Exceptions:
+         * std::bad_alloc
+         * 
+         * Assumptions on T:
+         * • Has an assignment operator. (=)
+         * • Has a default/no argument constructor
          */
-        Matrix& operator=(const Matrix<T>& target_matrix);
+        Matrix& operator=(const Matrix<T>& target_matrix)
+        {
+            if (this == &target_matrix)
+            {
+                return *this;
+            }
+            dimensions = target_matrix.dimensions();
+            Array<T> tmp_arr = target_matrix.elements;
+            ~Array<T>(elements);
+            elements = tmp_arr;
+            return *this;
+        }
 
         /*
          * Operator: +=
@@ -175,9 +293,27 @@ namespace mtm
          * Usage: matrix(row, column)
          * ----------------------
          * Returns a reference to the element of the matrix in the (row, column) index.
+         * 
+         * Possible Exceptions:
+         * Matrix::AccessIllegalElement
          */
-        T& operator()(int row, int col);
-        const T& operator()(int row, int col) const;
+        T& operator()(int row, int col)
+        {
+            if(row >= height() || col >= row() || row < 0 || col < 0)
+            {
+                throw AccessIllegalElement();
+            }
+            return elements[row * IntMatrix::width() + col];
+        }
+
+        const T& operator()(int row, int col) const
+        {
+            if(row >= height() || col >= row())
+            {
+                throw AccessIllegalElement();
+            }
+            return elements[row * IntMatrix::width() + col];
+        }
 
         /*
          * Iterator support
@@ -211,7 +347,7 @@ namespace mtm
              * ---------------------------------------
              * Copies an existing iterator.
              */
-            _iterator(_iterator& it) : matrix(it.matrix), index(it.index) { }
+            _iterator(const _iterator& it) : matrix(it.matrix), index(it.index) { }
             
             /*
              * Operator: =
@@ -288,8 +424,18 @@ namespace mtm
         typedef _iterator<Matrix<T>, T> iterator;
         typedef _iterator<const Matrix<T>, const T> const_iterator;
 
-        iterator begin();
-        const_iterator begin() const;
+        iterator begin()
+        {
+            iterator it(this, 0);
+            return it;
+        }
+
+        const_iterator begin() const
+        {
+            const_iterator it(this, 0);
+            return it;
+        }
+
         iterator end();
         const_iterator end() const;
 
@@ -307,7 +453,7 @@ namespace mtm
             {
                 return description;
             }
-        }
+        };
 
         class IllegalInitialization : public Exception
         {
@@ -320,7 +466,7 @@ namespace mtm
             {
                 return description;
             }
-        }
+        };
 
         class DimensionMismatch : public Exception
         {
@@ -338,7 +484,7 @@ namespace mtm
             {
                 return message.c_str();
             }
-        }
+        };
     };
     
     /**************************************/
@@ -350,11 +496,33 @@ namespace mtm
      *        matrix1 + matrix2
      * ----------------------
      * Adds type_T to every single element in the matrix.
-     * Or performs addition between every two elements in both matrixes
+     * The other form performs addition between every two elements in both matrices
      * and returns a new Matrix<T> result.
+     * 
+     * Possible Exceptions:
+     * Matrix::DimensionMismatch (if adding two matrices), std::bad_alloc
+     * 
+     * Assumptions on T:
+     * • Has a + operator between two T's.
+     * • Has an assignment operator. (=)
      */
     template<typename T>
-    Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+    Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2)
+    {
+        if(matrix1.width() != matrix2.width() || matrix1.height() != matrix2.height())
+        {
+            throw DimensionMismatch(matrix1, matrix2);
+        }
+        Matrix<T> result(matrix1);
+        for(int i = 0; i < result.height(); i++)
+        {
+            for(int j = 0; j < result.width(); j++)
+            {
+                result(i, j) = result(i, j) + matrix2(i, j);
+            }
+        }
+        return result;
+    }
     
     template<typename T>
     Matrix<T> operator+(const Matrix<T>& matrix, const T& value);
@@ -390,10 +558,23 @@ namespace mtm
      * Usage:  bool res = all(matrix)
      * --------------------------------------
      * Returns true if and only if all the elements of the matrix
-     * are all true when converted to bool type.
+     * are true when converted to bool type.
+     * 
+     * Assumptions on T:
+     * • Has a conversion to bool type.
      */
     template<typename T>
-    bool all(const Matrix<T>& matrix);
+    bool all(const Matrix<T>& matrix) noexcept
+    {
+        for(const T& val : matrix)
+        {
+            if(!static_cast<bool>(val))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /*
      * Function: any
