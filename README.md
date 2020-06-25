@@ -7,43 +7,43 @@
 
 - [x] int size() const;
 
-- [ ] Matrix transpose() const;
+- [x] Matrix transpose() const;
 
-- [ ] iterator begin();
+- [x] iterator begin();
 
-- [ ] const_iterator begin() const;
+- [x] const_iterator begin() const;
 
 
 ### Operators
-- [ ] Matrix& operator=(const Matrix<T>& target_matrix);
+- [x] Matrix& operator=(const Matrix<T>& target_matrix);
 
-- [ ] T& operator()(int row, int col);
+- [x] T& operator()(int row, int col);
 
-- [ ] const T& operator()(int row, int col) const;
+- [x] const T& operator()(int row, int col) const;
 
-- [ ] Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+- [x] Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
 
-- [ ] Matrix<bool> operator<(const T& value) const;
+- [x] Matrix<bool> operator<(const T& value) const;
 
-- [ ] Matrix<bool> operator<=(const T& value) const;
+- [x] Matrix<bool> operator<=(const T& value) const;
 
-- [ ] Matrix<bool> operator>(const T& value) const;
+- [x] Matrix<bool> operator>(const T& value) const;
 
-- [ ] Matrix<bool> operator>=(const T& value) const;
+- [x] Matrix<bool> operator>=(const T& value) const;
 
 
 ### Functions
-- [ ] static Matrix Diagonal(const int dim, const T& diagonal_value) const;
+- [x] static Matrix Diagonal(const int dim, const T& diagonal_value) const;
 
-- [ ] bool all(const Matrix<T>& matrix);
+- [x] bool all(const Matrix<T>& matrix);
 
 
 ### Iterators
-- [ ] _iterator(_iterator& it)
+- [x] _iterator(_iterator& it)
 
-- [ ] _iterator& operator++()
+- [x] _iterator& operator++()
 
-- [ ] _iterator operator++(int)
+- [x] _iterator operator++(int)
 
 ## ______________________________
 
