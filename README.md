@@ -1,7 +1,7 @@
 # To Do List
 ## Tal
 ### Methods
-- [ ] Matrix(const mtm::Dimensions dim, const T init_value = T());
+- [x] Matrix(const mtm::Dimensions dim, const T init_value = T());
 
 - [ ] int height() const;
 
