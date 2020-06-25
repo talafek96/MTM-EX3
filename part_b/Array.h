@@ -116,7 +116,7 @@ namespace mtm
          * ----------------------
          * Returns the <index> element stored in the array.
          */
-        T& operator[](int index);
+        T& operator[](int index)
         {
             return data[index];
         }
