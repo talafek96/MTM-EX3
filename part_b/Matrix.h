@@ -15,7 +15,7 @@ namespace mtm
         /*********************************/
         /* Instance variables */
 
-        T* elements;                 /* A dynamic array of the elements   */
+        Array<T> elements;           /* A dynamic array of the elements   */
         mtm::Dimensions dimensions;  /* The allocated size of the array   */
     public:
         /*
@@ -28,8 +28,28 @@ namespace mtm
          * Each element in the matrix is initialized to init_value.
          * If init_value is missing, the elements are initialized with the
          * default constructor of T.
+         * 
+         * Possible Exceptions:
+         * IllegalInitialization, std::bad_alloc
+         * 
+         * Assumptions on T:
+         * • Has an assignment operator. (=)
+         * • Has a default/no argument constructor
          */ 
-        explicit Matrix(const mtm::Dimensions dim, const T init_value = T());
+        explicit Matrix(const mtm::Dimensions dim, const T& init_value = T()) :
+        dimensions(dim)
+        {
+            if (dim.getCol() <= 0 || dim.getRow() <= 0)
+            {
+                throw IllegalInitialization();
+            }
+            elements = Array<T>(size);
+            int size = dim.getCol() * dim.getRow();
+            for(int i = 0; i < size; i++)
+            {
+                elements[i] = init_value;
+            }
+        }
 
         /*
          * Copy Constructor: Matrix<T>
@@ -38,15 +58,21 @@ namespace mtm
          * ---------------------------------------
          * Initializes a new Matrix.  
          * Creates a new matrix that is a copy of matrix.
-         */
-        Matrix(const Matrix<T>& matrix);
+         * Assumptions on T:
+         * • Has an assignment operator. (=)
+         * Possible exceptions:
+         * std::bad_aloc if allocation fail.
+         */ 
+        Matrix(const Matrix<T>& matrix) :
+        dimensions(matrix.dimensions) , elements(matrix.elements) { }
+
                 
         /*
          * Destructor: ~Matrix
          * -------------------
          * Frees any heap storage allocated by this matrix.
          */
-        virtual ~Matrix();
+        virtual ~Matrix() { }
 
         /*
          * Method: Diagonal
@@ -55,7 +81,7 @@ namespace mtm
          * Creates a new Matrix<T> of dimensions (dim x dim) with diagonal_value
          * elements initialized in the diagonal.
          */
-        static Matrix Diagonal(const int dim, const T& diagonal_value) const;
+        static Matrix Diagonal(const int dim, const T& diagonal_value);
 
         /*
          * Method: height
@@ -63,7 +89,10 @@ namespace mtm
          * -----------------------------------
          * Returns the number of rows (height) of the matrix.
          */
-        int height() const;
+        int height() const noexcept
+        {
+            return dimensions.getRow();
+        }
 
         /*
          * Method: width
@@ -71,7 +100,10 @@ namespace mtm
          * -----------------------------------
          * Returns the number of columns (width) of the matrix.
          */
-        int width() const;
+        int width() const noexcept
+        {
+            return dimensions.getCol();
+        }
         
         /*
          * Method: size
@@ -79,7 +111,10 @@ namespace mtm
          * -----------------------------------
          * Returns the number of elements in the matrix.
          */
-        int size() const;
+        int size() const
+        {
+            return height() * width();
+        }
 
         /*
          * Method: transpose
@@ -96,9 +131,23 @@ namespace mtm
          * -----------------------------------
          * Returns a new Matrix<T> copy of matrix after applying <function_pointer>
          *  to each element of matrix.
+         * 
+         * Assumptions on T:
+         * • Has an assignment operator. (=)
+         * 
+         * Possible exceptions:
+         * std::bad_aloc if allocation fail.
          */
         template<typename FUNCTOR>
-        Matrix apply(FUNCTOR function);
+        Matrix apply(FUNCTOR function)
+        {
+            Matrix new_matrix = *this;
+            for (iterator it = new_matrix.begin(); it != new_matrix.end(); it++)
+            {
+                *it = function(*it);
+            }
+            return new_matrix
+        }
 
         /*
          * Operator: <, >, <=, >=, ==, !=
@@ -112,8 +161,38 @@ namespace mtm
         Matrix<bool> operator<=(const T& value) const;
         Matrix<bool> operator>(const T& value) const;
         Matrix<bool> operator>=(const T& value) const;
-        Matrix<bool> operator==(const T& value) const;
-        Matrix<bool> operator!=(const T& value) const;
+
+        Matrix<bool> operator==(const T& value) const
+        {
+            Matrix<bool> result(dimensions, false);
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0 ; j < width; j++)
+                {
+                    if ((*this)(i,j) == value)
+                    {
+                        result(i,j) = true;
+                    }
+                }
+            }
+            return result;
+        }
+
+        Matrix<bool> operator!=(const T& value) const
+        {
+            Matrix<bool> result(dimensions, false);
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0 ; j < width; j++)
+                {
+                    if ((*this)(i,j) != value)
+                    {
+                        result(i,j) = true;
+                    }
+                }
+            }
+            return result;
+        }
 
         /**************************************/
         /*    Operator definition section     */
@@ -132,8 +211,18 @@ namespace mtm
          * Usage: matrix += value.
          * ----------------------
          * Adds number to every single element in the matrix and returns the matrix' reference.
+         * Assumptions on T:
+         * • Has an + operator. 
+         * 
+         * Possible exceptions:
+         * std::bad_aloc if allocation fail.
          */
-        Matrix& operator+=(T& value);
+        Matrix& operator+=(T& value)
+        {
+            Matrix add_matrix(dimensions, value);
+            *this = *this + add_matrix;
+            return *this;
+        }
 
         /*
          * Operator: -
@@ -141,8 +230,22 @@ namespace mtm
          * ----------------------
          * -matrix: Returns a negative copy of the matrix.
          * matrix1 - matrix2: performs a substraction of both matrices
+         * ----------------------
+         * Assumptions on T:
+         * • Has an assignment operator. (=)
+         * • Has a - operators.
+         * Possible exceptions:
+         * std::bad_aloc if allocation fail.
          */
-        Matrix operator-() const;
+        Matrix operator-() const 
+        {
+        Matrix negative = *this;
+        for(iterator it = negative.begin(); it != negative.end(); it++)
+        {
+            *it = -(*it);
+        }
+        return negative;
+        }
 
         /*
          * Operator: ()
@@ -156,8 +259,8 @@ namespace mtm
         /*
          * Iterator support
          */
-        template<typename MATRIX_T, typename TYPE>
-        class _iterator
+        template<typename MATRIX_T, typename TYPE> 
+        class _iterator // THIS IS A TEMPLATE ITERATOR CLASS WHICH WILL NOT BE DIRECTLY REACHABLE TO THE USER!
         {
             /*********************************/
             /*        Private Section        */
@@ -170,9 +273,9 @@ namespace mtm
             _iterator(MATRIX_T* matrix, int index) : matrix(matrix), index(index) {};
             friend class Matrix<T>;
             /*
-            Access to the ctor of this template iterator class should be
-            limited to the Matrix<T> class.
-            */
+             * Access to the ctor of this template iterator class should be
+             * limited to the Matrix<T> class.            
+             */
 
             /*********************************/
             /*         Public Section        */
@@ -264,8 +367,18 @@ namespace mtm
 
         iterator begin();
         const_iterator begin() const;
-        iterator end();
-        const_iterator end() const;
+
+        iterator end() noexcept
+        {
+            iterator new_it(this, size());
+            return (new_it);
+        }
+
+        const_iterator end() const noexcept
+        {
+            const_iterator new_it(this, size());
+            return (new_it);
+        }
 
         /*********************************/
         /*       Exception Section       */
@@ -281,7 +394,7 @@ namespace mtm
             {
                 return description;
             }
-        }
+        };
 
         class IllegalInitialization : public Exception
         {
@@ -294,7 +407,7 @@ namespace mtm
             {
                 return description;
             }
-        }
+        };
 
         class DimensionMismatch : public Exception
         {
@@ -312,7 +425,7 @@ namespace mtm
             {
                 return message.c_str();
             }
-        }
+        };
     };
     
     /**************************************/
@@ -326,15 +439,34 @@ namespace mtm
      * Adds type_T to every single element in the matrix.
      * Or performs addition between every two elements in both matrixes
      * and returns a new Matrix<T> result.
+     * 
+     * Assumptions on T:
+     * • Has an assignment operator. (=)
+     * • Has a + operators.
+     * 
+     * Possible exceptions:
+     * Matrix::DimensionMismatch if matrix1 and matrix2 has different dimensions.
+     * std::bad_aloc if allocation fail.
      */
     template<typename T>
     Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
     
     template<typename T>
-    Matrix<T> operator+(const Matrix<T>& matrix, const T& value);
+    Matrix<T> operator+(const Matrix<T>& matrix, const T& value)
+    {
+        Matrix<T> temp(matrix);
+        Matrix<T> result = (temp += value);
+        return result;
+    }
 
     template<typename T>
-    Matrix<T> operator+(const T& value, const Matrix<T>& matrix);
+    Matrix<T> operator+(const T& value, const Matrix<T>& matrix)
+    {
+        Dimensions copy_dim(matrix.height(),matrix.width());
+        Matrix<T> value_matrix(copy_dim, value)
+        Matrix<T> result = (value_matrix + matrix); 
+        return result; 
+    }
 
     /*
      * Operator: -
@@ -342,18 +474,40 @@ namespace mtm
      * ------------------------
      * Performs a substraction for every two elements of the matrices and
      * returns a copy of the result.
+     * 
+     * Assumptions on T:
+     * • Has an assignment operator. (=)
+     * • Has a + and - operators.
+     * 
+     * Possible exceptions:
+     * Matrix::DimensionMismatch if matrix1 and matrix2 has different dimensions.
+     * std::bad_aloc if allocation fail.
      */
     template<typename T>
-    Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+    Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2)
+    {
+        if ((matrix1.width() != matrix2.width()) || (matrix1.height() != matrix2.height()))
+        {
+            throw Matrix<T>::DimensionMismatch();
+        }
+        Matrix<T> result = matrix1 + (-matrix2);
+        return result;
+    }
 
     /*
      * Operator: <<
      * Usage: std::ostream& out << matrix
      * ----------------------------------
      * Prints the matrix in a formatted template to the output channel.
+     * 
+     * Assumptions on T:
+     * • Has a << operators.
      */
     template<typename T>
-    std::ostream& operator<<(std::ostream& out, const Matrix<T>& matrix);
+    std::ostream& operator<<(std::ostream& out, const Matrix<T>& matrix) noexcept
+    {
+        return printMatrix(out, begin(), end(), width());
+    }
 
     /**************************************/
     /*    Function definition section     */
@@ -375,9 +529,22 @@ namespace mtm
      * --------------------------------------
      * Returns true if and only if exists atleast one element
      * in the matrix that is true when converted to bool type.
+     * 
+     * Assumptions on T:
+     * • Has casting to bool.
      */
     template<typename T>
-    bool any(const Matrix<T>& matrix);
+    bool any(const Matrix<T>& matrix) noexcept
+    {
+        for(Matrix<T>::const_itrator it = matrix.begin(); it != matrix.end(); it++)
+        {
+            if (static_cast<bool>(*it))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     class Exception : public std::exception {};
 };
