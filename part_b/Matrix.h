@@ -156,8 +156,8 @@ namespace mtm
         /*
          * Iterator support
          */
-        template<typename MATRIX_T, typename TYPE>
-        class _iterator
+        template<typename MATRIX_T, typename TYPE> 
+        class _iterator // THIS IS A TEMPLATE ITERATOR CLASS WHICH WILL NOT BE DIRECTLY REACHABLE TO THE USER!
         {
             /*********************************/
             /*        Private Section        */
@@ -170,9 +170,9 @@ namespace mtm
             _iterator(MATRIX_T* matrix, int index) : matrix(matrix), index(index) {};
             friend class Matrix<T>;
             /*
-            Access to the ctor of this template iterator class should be
-            limited to the Matrix<T> class.
-            */
+             * Access to the ctor of this template iterator class should be
+             * limited to the Matrix<T> class.            
+             */
 
             /*********************************/
             /*         Public Section        */
