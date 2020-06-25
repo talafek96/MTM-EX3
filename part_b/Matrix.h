@@ -36,7 +36,8 @@ namespace mtm
          * • Has an assignment operator. (=)
          * • Has a default/no argument constructor
          */ 
-        explicit Matrix(const mtm::Dimensions dim, const T& init_value = T())
+        explicit Matrix(const mtm::Dimensions dim, const T& init_value = T()) :
+        dimensions(dim)
         {
             if (dim.getCol() <= 0 || dim.getRow() <= 0)
             {
@@ -82,7 +83,10 @@ namespace mtm
          * -----------------------------------
          * Returns the number of rows (height) of the matrix.
          */
-        int height() const;
+        int height() const noexcept
+        {
+            return dimensions.getRow();
+        }
 
         /*
          * Method: width
@@ -98,7 +102,10 @@ namespace mtm
          * -----------------------------------
          * Returns the number of elements in the matrix.
          */
-        int size() const;
+        int size() const
+        {
+            return height() * width();
+        }
 
         /*
          * Method: transpose
