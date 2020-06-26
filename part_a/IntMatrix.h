@@ -190,7 +190,9 @@ namespace mtm {
              */
             _iterator& operator=(const _iterator& it)
             {
-                *this = _iterator(it);
+                _iterator copy(it);
+                matrix = copy.matrix;
+                index = copy.index;
                 return *this;
             }
 
