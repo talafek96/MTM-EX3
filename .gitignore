@@ -396,3 +396,5 @@ part_b/build/CMakeFiles/PartB.dir/objects1.rsp
 part_b/build/CMakeFiles/PartB.dir/progress.make
 part_b/build/Testing/Temporary/LastTest.log
 part_b/build/.cmake/api/v1/reply/index-2020-06-26T15-32-54-0449.json
+part_b/test_partB_output
+part_b/test_partB.cpp
