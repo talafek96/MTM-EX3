@@ -8,6 +8,7 @@
 #include <iterator>
 #include <string>
 #include <fstream>
+#include <cmath>
 
 #include "Matrix.h"
 
