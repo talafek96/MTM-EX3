@@ -75,8 +75,11 @@ namespace mtm
          * ---------------------------------------
          * Initializes a new Matrix.  
          * Creates a new matrix that is a copy of matrix.
+         * 
          * Assumptions on T:
          * • Has an assignment operator. (=)
+         * • Has a default/no argument constructor.
+         * 
          * Possible exceptions:
          * std::bad_aloc if allocation fail.
          */ 
@@ -192,12 +195,13 @@ namespace mtm
          * 
          * Assumptions on T:
          * • Has an assignment operator. (=)
+         * • Has a copy ctor.
          * 
          * Possible exceptions:
          * std::bad_aloc if allocation fail.
          */
         template<typename FUNCTOR>
-        Matrix apply(FUNCTOR function)
+        Matrix apply(FUNCTOR function) const
         {
             Matrix new_matrix = *this;
             for(T& element : new_matrix)
@@ -220,6 +224,7 @@ namespace mtm
          * 
          * Assumptions on T:
          * • T can be compared using the <bool operator> the client wishes to use.
+         * • Has a copy ctor.
          */
         Matrix<bool> operator<(const T& value) const
         {
@@ -380,7 +385,7 @@ namespace mtm
          */
         Matrix operator-() const 
         {
-            Matrix negative = *this;
+            Matrix negative(*this);
             for(T& element : negative)
             {
                 element = -element;
@@ -660,7 +665,7 @@ namespace mtm
      * 
      * Assumptions on T:
      * • Has an assignment operator. (=)
-     * • Has a + and - operators.
+     * • Has a binary + operator and an unary - operator.
      * 
      * Possible exceptions:
      * Matrix::DimensionMismatch if matrix1 and matrix2 have different dimensions.
@@ -679,7 +684,8 @@ namespace mtm
      * Prints the matrix in a formatted template to the output channel.
      * 
      * Assumptions on T:
-     * • Has a << operators.
+     * • Has a << operator.
+     * • Has a copy ctor.
      */
     template<typename T>
     std::ostream& operator<<(std::ostream& out, const Matrix<T>& matrix) noexcept
