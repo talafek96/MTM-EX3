@@ -340,7 +340,6 @@ namespace mtm
             }
             dimensions = target_matrix.dimensions;
             Array<T> tmp_arr = target_matrix.elements;
-            elements.~Array();
             elements = tmp_arr;
             return *this;
         }
@@ -372,19 +371,19 @@ namespace mtm
          * ----------------------
          * Assumptions on T:
          * • Has an assignment operator. (=)
-         * • Has a - operators.
+         * • Has a unary - operator.
          * 
          * Possible exceptions:
-         * std::bad_aloc if allocation fail.
+         * std::bad_aloc if the allocation fails.
          */
         Matrix operator-() const 
         {
-        Matrix negative = *this;
-        for(iterator it = negative.begin(); it != negative.end(); it++)
-        {
-            *it = -(*it);
-        }
-        return negative;
+            Matrix negative = *this;
+            for(T& element : negative)
+            {
+                element = -element;
+            }
+            return negative;
         }
 
         /*
@@ -398,20 +397,20 @@ namespace mtm
          */
         T& operator()(int row, int col)
         {
-            if(row >= height() || col >= row() || row < 0 || col < 0)
+            if(row >= height() || col >= width() || row < 0 || col < 0)
             {
                 throw AccessIllegalElement();
             }
-            return elements[row * IntMatrix::width() + col];
+            return elements[row * width() + col];
         }
 
         const T& operator()(int row, int col) const
         {
-            if(row >= height() || col >= row())
+            if(row >= height() || col >= width() || row < 0 || col < 0)
             {
                 throw AccessIllegalElement();
             }
-            return elements[row * IntMatrix::width() + col];
+            return elements[row * width() + col];
         }
 
         /*
@@ -457,7 +456,9 @@ namespace mtm
              */
             _iterator& operator=(const _iterator& it)
             {
-                *this = _iterator(it);
+                _iterator copy(it);
+                matrix = copy.matrix;
+                index = copy.index;
                 return *this;
             }
 
@@ -497,7 +498,7 @@ namespace mtm
                 {
                     throw AccessIllegalElement;
                 }
-                return *(matrix->elements + index);
+                return *(matrix->elements[index]);
             }
             
             /*
@@ -538,13 +539,13 @@ namespace mtm
         iterator end() noexcept
         {
             iterator new_it(this, size());
-            return (new_it);
+            return new_it;
         }
 
         const_iterator end() const noexcept
         {
             const_iterator new_it(this, size());
-            return (new_it);
+            return new_it;
         }
 
         /*********************************/
@@ -620,7 +621,7 @@ namespace mtm
     {
         if(matrix1.width() != matrix2.width() || matrix1.height() != matrix2.height())
         {
-            throw DimensionMismatch(matrix1, matrix2);
+            throw Matrix<T>::DimensionMismatch(matrix1, matrix2);
         }
         Matrix<T> result(matrix1);
         for(int i = 0; i < result.height(); i++)
@@ -636,9 +637,7 @@ namespace mtm
     template<typename T>
     Matrix<T> operator+(const Matrix<T>& matrix, const T& value)
     {
-        Matrix<T> temp(matrix);
-        Matrix<T> result = (temp += value);
-        return result;
+        return Matrix<T>::Matrix(matrix) += value;
     }
 
     template<typename T>
@@ -647,7 +646,7 @@ namespace mtm
         Dimensions copy_dim(matrix.height(),matrix.width());
         Matrix<T> value_matrix(copy_dim, value);
         Matrix<T> result = (value_matrix + matrix); 
-        return result; 
+        return result;
     }
 
     /*
@@ -666,14 +665,9 @@ namespace mtm
      * std::bad_aloc if allocation fail.
      */
     template<typename T>
-    Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2)
+    Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2) //Assumes operator+ throws Matrix::DimensionMismatch
     {
-        if ((matrix1.width() != matrix2.width()) || (matrix1.height() != matrix2.height()))
-        {
-            throw Matrix<T>::DimensionMismatch();
-        }
-        Matrix<T> result = matrix1 + (-matrix2);
-        return result;
+        return matrix1 + (-matrix2);
     }
 
     /*
@@ -731,7 +725,7 @@ namespace mtm
     template<typename T>
     bool any(const Matrix<T>& matrix) noexcept
     {
-        for(Matrix<T>::const_itrator it = matrix.begin(); it != matrix.end(); it++)
+        for(Matrix<T>::const_iterator it = matrix.begin(); it != matrix.end(); it++)
         {
             if (static_cast<bool>(*it))
             {
