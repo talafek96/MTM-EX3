@@ -17,8 +17,8 @@ namespace mtm
         /*********************************/
         /* Instance variables */
 
-        Array<T> elements;           /* A dynamic array of the elements   */
         mtm::Dimensions dimensions;  /* The allocated size of the array   */
+        Array<T> elements;           /* A dynamic array of the elements   */
 
         template<typename FUNCTOR>
         void determineCondition(Matrix<bool>& result, FUNCTOR condition) const
@@ -742,6 +742,6 @@ namespace mtm
         }
         return false;
     }
-};
+}
 
 #endif

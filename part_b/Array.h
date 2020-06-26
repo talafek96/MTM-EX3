@@ -27,7 +27,7 @@ namespace mtm
          * Possible exceptions:
          * std::bad_alloc
          */   
-        explicit Array(int size) : max_size(size), data(new T[size]) { }
+        explicit Array(int size) : data(new T[size]), max_size(size) { }
         Array() : data(nullptr), max_size(0) { };
 
         /*
@@ -126,5 +126,5 @@ namespace mtm
             return data[index];
         }
     };
-};
+}
 #endif
