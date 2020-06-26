@@ -10,7 +10,7 @@ namespace mtm
     private:
         /* Instance variables */
         T* data;
-        int size;
+        int max_size;
     public:
         /*********************************/
         /*        Public Section        */
@@ -27,8 +27,8 @@ namespace mtm
          * Possible exceptions:
          * std::bad_alloc
          */   
-        explicit Array(int size) : size(size), data(new T[size]) { }
-        Array() : data(nullptr), size = 0 { };
+        explicit Array(int size) : max_size(size), data(new T[size]) { }
+        Array() : data(nullptr), max_size(0) { };
 
         /*
          * Copy Constructor: Array<T>
@@ -40,7 +40,7 @@ namespace mtm
          * Possible exceptions:
          * No assignment operator to class T, std::bad_aloc
          */
-        Array(const Array& arr) : size(arr.size())
+        Array(const Array& arr) : max_size(arr.size())
         {
             T* new_data = new T[arr.size()];
             try
@@ -95,7 +95,8 @@ namespace mtm
             }
 
             delete[] data;
-            data = new_data;
+            data = temp_data;
+            max_size = target_arr.max_size;
             return *this;
         }
 
@@ -107,7 +108,7 @@ namespace mtm
          */
         int size() const noexcept
         {
-            return size;
+            return max_size;
         }
 
         /*
