@@ -6,6 +6,8 @@
 
 namespace mtm
 {
+    class Exception : public std::exception {};
+
     template<typename T>
     class Matrix
     {
@@ -18,7 +20,7 @@ namespace mtm
         Array<T> elements;           /* A dynamic array of the elements   */
         mtm::Dimensions dimensions;  /* The allocated size of the array   */
 
-        template<typename FUNCTOR, typename TYPE>
+        template<typename FUNCTOR>
         void determineCondition(Matrix<bool>& result, FUNCTOR condition) const
         {
             for(int i = 0; i < height(); i++)
@@ -286,9 +288,9 @@ namespace mtm
         Matrix<bool> operator==(const T& value) const
         {
             Matrix<bool> bool_result(dimensions, false);
-            for (int i = 0; i < height; i++)
+            for (int i = 0; i < height(); i++)
             {
-                for (int j = 0 ; j < width; j++)
+                for (int j = 0 ; j < width(); j++)
                 {
                     if ((*this)(i,j) == value)
                     {
@@ -302,9 +304,9 @@ namespace mtm
         Matrix<bool> operator!=(const T& value) const
         {
             Matrix<bool> bool_result(dimensions, false);
-            for (int i = 0; i < height; i++)
+            for (int i = 0; i < height(); i++)
             {
-                for (int j = 0 ; j < width; j++)
+                for (int j = 0 ; j < width(); j++)
                 {
                     if ((*this)(i,j) != value)
                     {
@@ -355,7 +357,7 @@ namespace mtm
          * Possible exceptions:
          * std::bad_aloc if allocation fail.
          */
-        Matrix& operator+=(T& value)
+        Matrix& operator+=(const T& value)
         {
             Matrix add_matrix(dimensions, value);
             *this = *this + add_matrix;
@@ -496,9 +498,9 @@ namespace mtm
             {
                 if((index >= matrix->size()) || (index < 0) || (*this == matrix->end()))
                 {
-                    throw AccessIllegalElement;
+                    throw AccessIllegalElement();
                 }
-                return *(matrix->elements[index]);
+                return (matrix->elements)[index];
             }
             
             /*
@@ -509,12 +511,12 @@ namespace mtm
              * Returns a bool value that determines whether it1 is equal to it2 (true or false
              * according to the used operator).
              */
-            bool operator==(_iterator& it) noexcept
+            bool operator==(const _iterator& it) const noexcept
             {
                 return (index == it.index) && (matrix == it.matrix);
             }
             
-            bool operator!=(_iterator& it) noexcept
+            bool operator!=(const _iterator& it) const noexcept
             {
                 return !(*this == it);
             }
@@ -554,11 +556,11 @@ namespace mtm
         class AccessIllegalElement : public Exception
         {
         private:
-            static const char* description[] = "Mtm matrix error: An attempt to access an illegal element\n";
+            const char* description = "Mtm matrix error: An attempt to access an illegal element";
         public:
             AccessIllegalElement() = default;
             virtual ~AccessIllegalElement() = default;
-            const char* what() const noexcept
+            const char* what() const noexcept override
             {
                 return description;
             }
@@ -567,11 +569,11 @@ namespace mtm
         class IllegalInitialization : public Exception
         {
         private:
-            static const char* description[] = "Mtm matrix error: Illegal initialization values\n";
+            const char* description = "Mtm matrix error: Illegal initialization values";
         public:
             IllegalInitialization() = default;
             virtual ~IllegalInitialization() = default;
-            const char* what() const noexcept
+            const char* what() const noexcept override
             {
                 return description;
             }
@@ -581,12 +583,12 @@ namespace mtm
         {
         private:
             std::string message;
-            static const std::string description = "Mtm matrix error: Dimension mismatch: ";
+            const std::string description;
         public:
-            explicit DimensionMismatch(const Matrix& mat1, const Matrix& mat2)
+            explicit DimensionMismatch(const Matrix& mat1, const Matrix& mat2) : description("Mtm matrix error: Dimension mismatch: ")
             {
-                message = description + "(" + std::string(mat1.height()) + "," + std::string(mat1.width()) + ") "
-                + "(" + std::string(mat2.height()) + "," + std::string(mat2.width()) + ")";
+                message = description + "(" + std::to_string(mat1.height()) + "," + std::to_string(mat1.width()) + ") "
+                + "(" + std::to_string(mat2.height()) + "," + std::to_string(mat2.width()) + ")";
             }
             virtual ~DimensionMismatch() = default;
             const char* what() const noexcept override
@@ -621,7 +623,7 @@ namespace mtm
     {
         if(matrix1.width() != matrix2.width() || matrix1.height() != matrix2.height())
         {
-            throw Matrix<T>::DimensionMismatch(matrix1, matrix2);
+            throw typename Matrix<T>::DimensionMismatch(matrix1, matrix2);
         }
         Matrix<T> result(matrix1);
         for(int i = 0; i < result.height(); i++)
@@ -637,7 +639,7 @@ namespace mtm
     template<typename T>
     Matrix<T> operator+(const Matrix<T>& matrix, const T& value)
     {
-        return Matrix<T>::Matrix(matrix) += value;
+        return typename Matrix<T>::Matrix(matrix) += value;
     }
 
     template<typename T>
@@ -682,7 +684,7 @@ namespace mtm
     template<typename T>
     std::ostream& operator<<(std::ostream& out, const Matrix<T>& matrix) noexcept
     {
-        return printMatrix(out, begin(), end(), width());
+        return printMatrix(out, matrix.begin(), matrix.end(), matrix.width());
     }
 
     /**************************************/
@@ -725,17 +727,15 @@ namespace mtm
     template<typename T>
     bool any(const Matrix<T>& matrix) noexcept
     {
-        for(Matrix<T>::const_iterator it = matrix.begin(); it != matrix.end(); it++)
+        for(const T& val : matrix)
         {
-            if (static_cast<bool>(*it))
+            if (static_cast<bool>(val))
             {
                 return true;
             }
         }
         return false;
     }
-
-    class Exception : public std::exception {};
 };
 
 #endif
