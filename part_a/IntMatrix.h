@@ -187,9 +187,10 @@ namespace mtm {
              * Replaces the instance variables of it1 to the 
              * instance variables of it2
              */
-            _iterator& operator=(_iterator& it)
+            _iterator& operator=(const _iterator& it)
             {
-                *this = _iterator(it);
+                index = it.index;
+                matrix = it.matrix;
                 return *this;
             }
 

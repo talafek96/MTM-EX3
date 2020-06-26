@@ -234,6 +234,7 @@ namespace mtm
          * Assumptions on T:
          * • Has an assignment operator. (=)
          * • Has a - operators.
+         * 
          * Possible exceptions:
          * std::bad_aloc if allocation fail.
          */
@@ -297,9 +298,10 @@ namespace mtm
              * Replaces the instance variables of it1 to the 
              * instance variables of it2
              */
-            _iterator& operator=(_iterator& it)
+            _iterator& operator=(const _iterator& it)
             {
-                *this = _iterator(it);
+                index = it.index;
+                matrix = it.matrix;
                 return *this;
             }
 
@@ -328,16 +330,16 @@ namespace mtm
              * Usage: *it;
              * ----------------------
              * Returns the value of the Matrix<T> that is currently being pointed at.
+             * 
+             * Possible exceptions:
+             * AccessIllegalElement if trying to access an illegal area in the array.
+             * 
              */
             TYPE& operator*()
             {
-                if(index >= matrix->size())
+                if((index >= matrix->size()) || (index < 0) || (*this == matrix->end()))
                 {
-                    return *(matrix->elements + matrix->size() - 1); //Return the last element of the matrix
-                }
-                if(index < 0)
-                {
-                    return *(matrix->elements);
+                    throw AccessIllegalElement;
                 }
                 return *(matrix->elements + index);
             }
@@ -350,12 +352,12 @@ namespace mtm
              * Returns a bool value that determines whether it1 is equal to it2 (true or false
              * according to the used operator).
              */
-            bool operator==(_iterator& it)
+            bool operator==(_iterator& it) noexcept
             {
                 return (index == it.index) && (matrix == it.matrix);
             }
             
-            bool operator!=(_iterator& it)
+            bool operator!=(_iterator& it) noexcept
             {
                 return !(*this == it);
             }

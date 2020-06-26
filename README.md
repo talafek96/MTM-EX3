@@ -85,12 +85,12 @@
 
 
 ### Iterators
-- [ ] _iterator(MATRIX_T* matrix, int index)
+- [x] _iterator(MATRIX_T* matrix, int index)
 
 - [ ] _iterator& operator=(_iterator& it)
 
-- [ ] TYPE& operator*()
+- [x] TYPE& operator*()
 
-- [ ] bool operator==(_iterator& it)
+- [x] bool operator==(_iterator& it)
 
-- [ ] bool operator!=(_iterator& it)
+- [x] bool operator!=(_iterator& it)
