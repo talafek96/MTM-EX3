@@ -300,8 +300,7 @@ namespace mtm
              */
             _iterator& operator=(const _iterator& it)
             {
-                index = it.index;
-                matrix = it.matrix;
+                *this = _iterator(it);
                 return *this;
             }
 
