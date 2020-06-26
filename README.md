@@ -13,7 +13,6 @@
 
 - [x] const_iterator begin() const;
 
-
 ### Operators
 - [x] Matrix& operator=(const Matrix<T>& target_matrix);
 
@@ -49,48 +48,49 @@
 
 ## Berko
 ### Methods
-- [ ] Matrix(const Matrix<T>& matrix);
+- [x] Matrix(const Matrix<T>& matrix);
 
-- [ ] virtual ~Matrix();
+- [x] virtual ~Matrix();
 
-- [ ] int width() const;
+- [x] int width() const;
 
-- [ ] Matrix apply(FUNCTOR function);
+- [x] Matrix apply(FUNCTOR function);
 
-- [ ] iterator end();
+- [x] iterator end();
 
-- [ ] const_iterator end() const;
+- [x] const_iterator end() const;
 
 
 ### Operators
-- [ ] Matrix operator-() const;
+- [x] Matrix operator-() const;
 
-- [ ] Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+- [x] Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
 
-- [ ] std::ostream& operator<<(std::ostream& out, const Matrix<T>& matrix);
+- [x] std::ostream& operator<<(std::ostream& out, const Matrix<T>& matrix);
 
-- [ ] Matrix& operator+=(T& value);
+- [x] Matrix& operator+=(T& value);
 
-- [ ] Matrix<T> operator+(const Matrix<T>& matrix, const T& value);
+- [x] Matrix<T> operator+(const Matrix<T>& matrix, const T& value);
 
-- [ ] Matrix<T> operator+(const T& value, const Matrix<T>& matrix);
+- [x] Matrix<T> operator+(const T& value, const Matrix<T>& matrix);
 
-- [ ] Matrix<bool> operator==(const T& value) const;
+- [x] Matrix<bool> operator==(const T& value) const;
 
-- [ ] Matrix<bool> operator!=(const T& value) const;
+- [x] Matrix<bool> operator!=(const T& value) const;
 
+- [x] Matrix<bool> operator==(const T& value) const;
 
 ### Functions
-- [ ] bool any(const Matrix<T>& matrix);
+- [x] bool any(const Matrix<T>& matrix);
 
 
 ### Iterators
-- [ ] _iterator(MATRIX_T* matrix, int index)
+- [x] _iterator(MATRIX_T* matrix, int index)
 
-- [ ] _iterator& operator=(_iterator& it)
+- [x] _iterator& operator=(_iterator& it)
 
-- [ ] TYPE& operator*()
+- [x] TYPE& operator*()
 
-- [ ] bool operator==(_iterator& it)
+- [x] bool operator==(_iterator& it)
 
-- [ ] bool operator!=(_iterator& it)
+- [x] bool operator!=(_iterator& it)
