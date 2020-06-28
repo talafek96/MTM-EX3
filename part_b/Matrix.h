@@ -19,21 +19,7 @@ namespace mtm
 
         mtm::Dimensions dimensions;  /* The allocated size of the array   */
         Array<T> elements;           /* A dynamic array of the elements   */
-
-        template<typename FUNCTOR>
-        void determineCondition(Matrix<bool>& result, FUNCTOR condition) const
-        {
-            for(int i = 0; i < height(); i++)
-            {
-                for(int j = 0; j < width(); j++)
-                {
-                    if(condition((*this)(i, j)))
-                    {
-                        result(i, j) = true;
-                    }
-                }
-            }            
-        }
+        
     public:
         /*
          * Constructor: Matrix<T>
@@ -221,75 +207,59 @@ namespace mtm
          * 
          * Possible Exceptions:
          * std::bad_alloc
-         * 
+         */
+
+        /*
          * Assumptions on T:
-         * • T can be compared using the <bool operator> the client wishes to use.
-         * • Has a copy ctor.
+         * • Has a < operator.
          */
         Matrix<bool> operator<(const T& value) const
         {
-            class LowerThan
-            {
-                T val;
-            public:
-                LowerThan(const T& val) : val(val) { }
-                bool operator()(const T& to_compare)
-                {
-                    return to_compare < val;
-                }
-            };
             Matrix<bool> bool_result(dimensions, false);
-            this->determineCondition(bool_result, LowerThan(value));
+            for(int i = 0; i < height(); i++)
+            {
+                for(int j = 0; j < width(); j++)
+                {
+                    if((*this)(i, j) < value)
+                    {
+                        bool_result(i, j) = true;
+                    }
+                }
+            }
             return bool_result;
         }
+
+        /*
+         * Assumptions on T:
+         * • Has a <,== operator.
+         */
         Matrix<bool> operator<=(const T& value) const
         {
-            Matrix<bool> bool_result(dimensions, false);
-            for(int i = 0; i < height(); i++)
-            {
-                for(int j = 0; j < width(); j++)
-                {
-                    if((*this)(i, j) <= value)
-                    {
-                        bool_result(i, j) = true;
-                    }
-                }
-            }
-            return bool_result;
+            return ((*this) < value) + ((*this) == value); //This is fine because we will never get a case of true+true
         }
-
+        
+        /*
+         * Assumptions on T:
+         * • Has a <,== operator.
+         */
         Matrix<bool> operator>(const T& value) const
         {
-            Matrix<bool> bool_result(dimensions, false);
-            for(int i = 0; i < height(); i++)
-            {
-                for(int j = 0; j < width(); j++)
-                {
-                    if((*this)(i, j) > value)
-                    {
-                        bool_result(i, j) = true;
-                    }
-                }
-            }
-            return bool_result;
+            return ((*this) <= value) == false;
         }
 
+        /*
+         * Assumptions on T:
+         * • Has a < operator.
+         */
         Matrix<bool> operator>=(const T& value) const
         {
-            Matrix<bool> bool_result(dimensions, false);
-            for(int i = 0; i < height(); i++)
-            {
-                for(int j = 0; j < width(); j++)
-                {
-                    if((*this)(i, j) >= value)
-                    {
-                        bool_result(i, j) = true;
-                    }
-                }
-            }
-            return bool_result;
+            return ((*this) < value) == false;
         }
 
+        /*
+         * Assumptions on T:
+         * • Has a == operator.
+         */
         Matrix<bool> operator==(const T& value) const
         {
             Matrix<bool> bool_result(dimensions, false);
@@ -306,20 +276,13 @@ namespace mtm
             return bool_result;
         }
 
+        /*
+         * Assumptions on T:
+         * • Has a == operator.
+         */
         Matrix<bool> operator!=(const T& value) const
         {
-            Matrix<bool> bool_result(dimensions, false);
-            for (int i = 0; i < height(); i++)
-            {
-                for (int j = 0 ; j < width(); j++)
-                {
-                    if ((*this)(i,j) != value)
-                    {
-                        bool_result(i, j) = true;
-                    }
-                }
-            }
-            return bool_result;
+            return ((*this) == value) == false;
         }
 
         /**************************************/
