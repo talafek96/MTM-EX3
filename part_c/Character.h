@@ -5,6 +5,7 @@
 #include <memory>
 #include "Matrix.h"
 #include "Auxiliaries.h"
+#include "Exceptions.h"
 //---------
 
 namespace mtm
