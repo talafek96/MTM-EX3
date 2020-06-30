@@ -19,7 +19,7 @@ namespace mtm
         {
             if(character_ptr != nullptr)
             {
-                character_ptr = (*character_ptr).clone();
+                character_ptr = character_ptr->clone();
             }
         }
     }
@@ -79,15 +79,11 @@ namespace mtm
         {
             throw OutOfRange();
         }
-        if(!board(src_coordinates.row, src_coordinates.col)->hasEnoughArmor())
-        {
-            throw OutOfAmmo();
-        }
-        if(!board(src_coordinates.row, src_coordinates.col)->canAttack(dst_coordinates.row, dst_coordinates.col))
-        {
-            throw IllegalTarget();
-        }
         board(src_coordinates.row, src_coordinates.col)->attack(board, src_coordinates, dst_coordinates);
+        if(board(dst_coordinates.row, dst_coordinates.col)->getHealth() <= 0)
+        {
+            board(dst_coordinates.row, dst_coordinates.col) = nullptr;
+        }
     };
 
     void Game::reload(const GridPoint & coordinates)
@@ -113,11 +109,11 @@ namespace mtm
         {
             if (character_ptr != nullptr)
             {
-                if (character_ptr.getTeam() == CPP)
+                if (character_ptr->getTeam() == CPP)
                 {
                     cppFlag = true;
                 }
-                if (character_ptr.getTeam() == PYTHON)
+                if (character_ptr->getTeam() == PYTHON)
                 {
                     pythonFlag = true;
                 }
@@ -156,7 +152,22 @@ namespace mtm
     std::shared_ptr<Character> Game::makeCharacter(CharacterType type, Team team, 
                                 units_t health, units_t ammo, units_t range, units_t power)
     {
-        
+        std::shared_ptr<Character> new_character;
+        switch(type)
+        {
+            case SOLDIER:
+            new_character = std::shared_ptr<Character>(new Soldier(team, health, ammo, range, power));
+            break;
+
+            case MEDIC:
+            new_character = std::shared_ptr<Character>(new Medic(team, health, ammo, range, power));
+            break;
+
+            case SNIPER:
+            new_character = std::shared_ptr<Character>(new Sniper(team, health, ammo, range, power));
+            break;
+        }
+        return new_character;
     }
 
     std::ostream& operator<<(std::ostream& out, Game& game) noexcept

@@ -17,12 +17,16 @@ namespace mtm
     class Game
     {
     private:
+        /*********************************/
+        /*        Private Section        */
+        /*********************************/
+        /* Instance variables */
         Matrix<std::shared_ptr<Character>> board;
         bool isInBounds(const GridPoint& coordinates) const;
         static const char EMPTY_CELL = ' ';
     public:
         /**************************************/
-        /*     C'tors amd D'tors section      */
+        /*     C'tors and D'tors section      */
         /**************************************/
         /*
          * Constructor: Game
@@ -34,7 +38,7 @@ namespace mtm
          * 
          * Possible Exceptions:
          * mtm::IllegalArgument, std::bad_alloc
-         */ 
+         */
         Game(int height, int width);
         
         /*
@@ -129,11 +133,11 @@ namespace mtm
         
         Game& operator=(const Game& other);
         /*
-        * Operator: <<
-        * Usage: std::ostream& out << game
-        * ----------------------------------
-        * Prints the game board in a formatted template to the output channel.
-        */
+         * Operator: <<
+         * Usage: std::ostream& out << game
+         * ----------------------------------
+         * Prints the game board in a formatted template to the output channel.
+         */
         friend std::ostream& operator<<(std::ostream& out, Game& game) noexcept;
     };
     std::ostream& operator<<(std::ostream& out, Game& game) noexcept;
