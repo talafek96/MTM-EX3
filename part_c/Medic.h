@@ -6,7 +6,7 @@
 
 namespace mtm
 {
-    class Medic
+    class Medic : public Character
     {
     };
 };

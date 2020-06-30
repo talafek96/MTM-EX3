@@ -6,7 +6,7 @@
 
 namespace mtm
 {
-    class Soldier
+    class Soldier : public Character
     {
     };
 };
