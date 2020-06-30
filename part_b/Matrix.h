@@ -494,13 +494,13 @@ namespace mtm
         typedef _iterator<Matrix<T>, T> iterator;
         typedef _iterator<const Matrix<T>, const T> const_iterator;
 
-        iterator begin()
+        iterator begin() noexcept
         {
             iterator it(this, 0);
             return it;
         }
 
-        const_iterator begin() const
+        const_iterator begin() const noexcept
         {
             const_iterator it(this, 0);
             return it;
