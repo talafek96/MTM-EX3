@@ -137,16 +137,29 @@ namespace mtm
         /**************************************/
         /*    Operator definition section     */
         /**************************************/
-        
+        /*
+         * Operator: =
+         * Usage: Game game_copy = game;
+         * ----------------------------------
+         * Deep-copies game into game_copy.
+         * Both games will be independent after the assignment.
+         * 
+         * Possible Exceptions:
+         * std::bad_alloc
+         */
         Game& operator=(const Game& other);
+
         /*
          * Operator: <<
          * Usage: std::ostream& out << game
          * ----------------------------------
          * Prints the game board in a formatted template to the output channel.
+         * 
+         * Possible Exceptions:
+         * std::bad_alloc
          */
-        friend std::ostream& operator<<(std::ostream& out, Game& game) noexcept;
+        friend std::ostream& operator<<(std::ostream& out, Game& game);
     };
-    std::ostream& operator<<(std::ostream& out, Game& game) noexcept;
-};
+    std::ostream& operator<<(std::ostream& out, Game& game);
+}
 #endif

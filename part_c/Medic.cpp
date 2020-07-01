@@ -83,4 +83,4 @@ namespace mtm
         std::shared_ptr<Character> copy(new Medic(*this));
         return copy;
     }
-};
+}

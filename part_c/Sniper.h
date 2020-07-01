@@ -18,10 +18,10 @@ namespace mtm
         int combo_attack_count;
         
         /* Const instance variables */
-        static const char CPP_NAME = 'S';
-        static const char PYTHON_NAME = 's';
+        static const char CPP_NAME = 'N';
+        static const char PYTHON_NAME = 'n';
         static const int MAX_MOVE_RANGE = 4;
-        static const int MAX_COMBO = 2;
+        static const int MAX_COMBO = 3;
         static const units_t CRITICAL_MULTIPLIER = 2;
         static const units_t RELOAD_AMMOUNT = 2;
         static const units_t AMMO_COST = 1;
@@ -50,7 +50,7 @@ namespace mtm
          * -----------------------------------
          * Returns the representation of the character on the game board as a char.
          */
-        char getName() const noexcept;
+        char getName() const noexcept override;
 
         /*
          * Method: clone
@@ -61,7 +61,7 @@ namespace mtm
          * Possible Exceptions:
          * std::bad_alloc.
          */
-         std::shared_ptr<Character> clone() const;
+         std::shared_ptr<Character> clone() const override;
         
         /*
          * Method: reload
@@ -69,7 +69,7 @@ namespace mtm
          * -----------------------------------
          * Adds 2 ammo to the sniper. 
          */
-        void reload() noexcept;
+        void reload() noexcept override;
 
         /*
          * Method: isInAttackRange
@@ -77,15 +77,15 @@ namespace mtm
          * -----------------------------------
          * Returns true if and only if the attack target is in attack range.
          */
-        bool isInAttackRange(const GridPoint& src_coordinates , const GridPoint& dst_coordinates) const noexcept;
-
+        bool isInAttackRange(const GridPoint& src_coordinates, const GridPoint& dst_coordinates)const noexcept override;
+        
         /*
          * Method: isLegalMove
          * Usage: sniper.isLegalMove();
          * -----------------------------------
          * Returns true if and only if the desired movement is legal.
          */        
-        bool isLegalMove(int distance) const noexcept;
+        bool isLegalMove(int distance) const noexcept override;
 
         /*
          * Method: hasEnoughAmmo
@@ -93,7 +93,7 @@ namespace mtm
          * -----------------------------------
          * Returns true if and only if the sniper has enough ammo to attack.
          */
-        bool hasEnoughAmmo() const noexcept;
+        bool hasEnoughAmmo() const noexcept override;
 
         /*
          * Method: attack
@@ -106,7 +106,8 @@ namespace mtm
          * Possible Exceptions:
          * mtm::OutOfAmmo, mtm::IllegalTarget.
          */
-        void attack(Matrix<std::shared_ptr<Character>>board, const GridPoint& src_coordinates , const GridPoint& dst_coordinates);
+        void attack(Matrix<std::shared_ptr<Character>>board,
+            const GridPoint& src_coordinates , const GridPoint& dst_coordinates) override;
     };
-};
+}
 #endif

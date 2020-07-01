@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <vector>
 
 namespace mtm
 {
@@ -81,7 +82,7 @@ namespace mtm
         }
         board(src_coordinates.row, src_coordinates.col)->attack(board, src_coordinates, dst_coordinates);
         clearDeadCharacters();
-    };
+    }
 
     void Game::reload(const GridPoint & coordinates)
     {
@@ -158,12 +159,16 @@ namespace mtm
         }
     }
 
-    /**************************************/
-    /*    Function definition section     */
-    /**************************************/
+    /******************************************/
+    /*    Function Implementation section     */
+    /******************************************/
     std::shared_ptr<Character> Game::makeCharacter(CharacterType type, Team team, 
                                 units_t health, units_t ammo, units_t range, units_t power)
     {
+        if(health <= 0 || ammo < 0 || range < 0 || power < 0)
+        {
+            throw IllegalArgument();
+        }
         std::shared_ptr<Character> new_character;
         switch(type)
         {
@@ -182,9 +187,20 @@ namespace mtm
         return new_character;
     }
 
-    std::ostream& operator<<(std::ostream& out, Game& game) noexcept
+    Game& Game::operator=(const Game& other)
     {
-        char container[game.board.size()];
+        if(&other == this)
+        {
+            return *this;
+        }
+        Game game_copy(other);
+        board = game_copy.board;
+        return *this;
+    }
+
+    std::ostream& operator<<(std::ostream& out, Game& game)
+    {
+        char* container = new char[game.board.size()];
         int i = 0;
         for (const std::shared_ptr<Character>& character_ptr : game.board)
         {
@@ -197,6 +213,8 @@ namespace mtm
                 container[i++] = character_ptr->getName();
             }
         }
-        return printGameBoard(out, container, container + i, game.board.width());
+        printGameBoard(out, container, container + i, game.board.width());
+        delete[] container;
+        return out;
     }
-};
+}

@@ -13,7 +13,7 @@ namespace mtm
     public:
         GameException();
         GameException(const std::string error);
-        virtual ~GameException();
+        virtual ~GameException() = default;
     };
 
     class IllegalArgument : public GameException
@@ -88,5 +88,5 @@ namespace mtm
         ~IllegalTarget() = default;
         const char* what() const noexcept override;
     };
-};
+}
 #endif

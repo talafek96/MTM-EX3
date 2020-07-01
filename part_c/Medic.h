@@ -44,7 +44,7 @@ namespace mtm
          * -----------------------------------
          * Returns the representation of the character on the game board as a char.
          */
-        char getName() const noexcept;
+        char getName() const noexcept override;
 
         /*
          * Method: clone
@@ -55,7 +55,7 @@ namespace mtm
          * Possible Exceptions:
          * std::bad_alloc.
          */
-         std::shared_ptr<Character> clone() const;
+         std::shared_ptr<Character> clone() const override;
         
         /*
          * Method: reload
@@ -63,7 +63,7 @@ namespace mtm
          * -----------------------------------
          * Adds 5 ammo to the medic. 
          */
-        void reload() noexcept;
+        void reload() noexcept override;
 
         /*
          * Method: isInAttackRange
@@ -71,15 +71,15 @@ namespace mtm
          * -----------------------------------
          * Returns true if and only if the attack target is in attack range.
          */
-        bool isInAttackRange(const GridPoint& src_coordinates , const GridPoint& dst_coordinates) const noexcept;
-
+        bool isInAttackRange(const GridPoint& src_coordinates, const GridPoint& dst_coordinates)const noexcept override;
+        
         /*
          * Method: isLegalMove
          * Usage: medic.isLegalMove();
          * -----------------------------------
          * Returns true if and only if the desired movement is legal.
          */        
-        bool isLegalMove(int distance) const noexcept;
+        bool isLegalMove(int distance) const noexcept override;
 
         /*
          * Method: hasEnoughAmmo
@@ -87,7 +87,7 @@ namespace mtm
          * -----------------------------------
          * Returns true if and only if the medic has enough ammo to attack.
          */
-        bool hasEnoughAmmo() const noexcept;
+        bool hasEnoughAmmo() const noexcept override;
 
         /*
          * Method: attack
@@ -103,7 +103,8 @@ namespace mtm
          * Possible Exceptions:
          * mtm::OutOfAmmo, mtm::IllegalTarget.
          */
-        void attack(Matrix<std::shared_ptr<Character>>board, const GridPoint& src_coordinates , const GridPoint& dst_coordinates);
+        void attack(Matrix<std::shared_ptr<Character>>board,
+            const GridPoint& src_coordinates , const GridPoint& dst_coordinates) override;
     };
-};
+}
 #endif

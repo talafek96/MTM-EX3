@@ -3,10 +3,10 @@
 #include <iostream>
 #include "Array.h"
 #include "Auxiliaries.h"
+#include "Exceptions.h"
 
 namespace mtm
 {
-    class Exception : public std::exception {};
 
     template<typename T>
     class Matrix
@@ -489,7 +489,7 @@ namespace mtm
                 return !(*this == it);
             }
         };
-        
+
         /* For the clarity of the code and prevent code duplication */
         typedef _iterator<Matrix<T>, T> iterator;
         typedef _iterator<const Matrix<T>, const T> const_iterator;
@@ -706,5 +706,4 @@ namespace mtm
         return false;
     }
 }
-
 #endif

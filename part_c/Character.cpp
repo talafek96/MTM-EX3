@@ -2,7 +2,7 @@
 
 namespace mtm
 {
-    Character::Character(Team team, units_t health, units_t ammo, units_t range, units_t power) :
+    Character::Character(Team team, units_t health, units_t ammo, units_t range, units_t power) noexcept :
     range(range), power(power), team(team), health(health), ammo(ammo) { }
 
     units_t Character::getHealth() const noexcept
@@ -19,4 +19,14 @@ namespace mtm
     {
         return team;
     }
-};
+
+    units_t Character::getRange() const
+    {
+        return range;
+    }
+    
+    units_t Character::getPower() const
+    {
+        return power;
+    }
+}

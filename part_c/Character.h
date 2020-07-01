@@ -92,5 +92,5 @@ namespace mtm
         virtual bool hasEnoughAmmo() const noexcept = 0;
         virtual void attack(Matrix<std::shared_ptr<Character>>board, const GridPoint& src_coordinates , const GridPoint& dst_coordinates) = 0;
     };
-};
+}
 #endif

@@ -54,7 +54,7 @@ namespace mtm
         {
             throw OutOfAmmo();
         }
-        if(target_ptr == nullptr || target_ptr->getTeam() == getTeam())
+        if(target_ptr == nullptr || (target_ptr->getTeam() == getTeam()) )
         {
             throw IllegalTarget();
         }
@@ -69,4 +69,4 @@ namespace mtm
         std::shared_ptr<Character> copy(new Sniper(*this));
         return copy;
     }
-};
+}

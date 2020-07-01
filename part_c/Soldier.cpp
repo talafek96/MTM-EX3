@@ -26,10 +26,6 @@ namespace mtm
         {
             return false;
         }
-        if((src_coordinates.col != dst_coordinates.col) && (src_coordinates.row != dst_coordinates.row))
-        {
-            return false;
-        }
         return true;
     }
 
@@ -57,10 +53,14 @@ namespace mtm
         {
             throw OutOfAmmo();
         }
+        if((src_coordinates.col != dst_coordinates.col) && (src_coordinates.row != dst_coordinates.row))
+        {
+            throw IllegalTarget();
+        }
         int distance;
         std::shared_ptr<Character> cell;
-        int area_of_effect = static_cast<int>(std::ceil(static_cast<double>(getRange()/COLATERAL_RANGE)));
-        units_t area_of_effect_damage = static_cast<units_t>(std::ceil(static_cast<double>(getPower()/COLATERAL_DAMAGE)));
+        int area_of_effect = std::ceil(static_cast<double>(getRange())/COLATERAL_RANGE);
+        units_t area_of_effect_damage = std::ceil(static_cast<double>(getPower())/COLATERAL_DAMAGE);
         for(int row = 0; row < board.height(); row++)
         {
             for(int col = 0; col < board.width(); col++)
@@ -93,4 +93,4 @@ namespace mtm
         std::shared_ptr<Character> copy(new Soldier(*this));
         return copy;
     }
-};
+}
