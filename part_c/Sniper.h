@@ -17,8 +17,9 @@ namespace mtm
         /* Instance variables */
         int combo_attack_count;
         
-        static const char CPP_NAME = 'N';
-        static const char PYTHON_NAME = 'n';
+        /* Const instance variables */
+        static const char CPP_NAME = 'S';
+        static const char PYTHON_NAME = 's';
         static const int MAX_MOVE_RANGE = 4;
         static const int MAX_COMBO = 2;
         static const units_t CRITICAL_MULTIPLIER = 2;
@@ -72,11 +73,11 @@ namespace mtm
 
         /*
          * Method: isInAttackRange
-         * Usage: sniper.isInAttackRange();
+         * Usage: sniper.isInAttackRange(src_coords, dst_coords);
          * -----------------------------------
          * Returns true if and only if the attack target is in attack range.
          */
-        bool isInAttackRange(int distance) const noexcept;
+        bool isInAttackRange(const GridPoint& src_coordinates , const GridPoint& dst_coordinates) const noexcept;
 
         /*
          * Method: isLegalMove
@@ -98,15 +99,14 @@ namespace mtm
          * Method: attack
          * Usage: sniper.attack(board, src_coords, dst_coords);
          * -----------------------------------
-         * ASSUMES: src_coords and dst_coords are legal and contain
-         * the corresponding character(*this) and the target.
+         * ASSUMES: src_coords is legal and contains the corresponding character (*this).
          * 
          * Attempts to attack the enemy character at grid dst_coords.
          * 
          * Possible Exceptions:
          * mtm::OutOfAmmo, mtm::IllegalTarget.
          */
-        void attack(Matrix<std::shared_ptr<Character>>board, const GridPoint src_coordinates , const GridPoint dst_coordinates);
+        void attack(Matrix<std::shared_ptr<Character>>board, const GridPoint& src_coordinates , const GridPoint& dst_coordinates);
     };
 };
 #endif

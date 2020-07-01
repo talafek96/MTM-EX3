@@ -87,10 +87,10 @@ namespace mtm
 
         //To be explained in each character header file:
         virtual void reload() noexcept = 0;
-        virtual bool isInAttackRange(int distance) const noexcept = 0;
+        virtual bool isInAttackRange(const GridPoint& src_coordinates , const GridPoint& dst_coordinates) const noexcept = 0;
         virtual bool isLegalMove(int distance) const noexcept = 0;
         virtual bool hasEnoughAmmo() const noexcept = 0;
-        virtual void attack(Matrix<std::shared_ptr<Character>>board, const GridPoint src_coordinates , const GridPoint dst_coordinates) = 0;
+        virtual void attack(Matrix<std::shared_ptr<Character>>board, const GridPoint& src_coordinates , const GridPoint& dst_coordinates) = 0;
     };
 };
 #endif

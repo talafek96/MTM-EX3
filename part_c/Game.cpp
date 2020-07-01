@@ -40,7 +40,7 @@ namespace mtm
         }
         board(coordinates.row, coordinates.col) = character;
     }
-
+    
     void Game::move(const GridPoint & src_coordinates, const GridPoint & dst_coordinates)
     {
         if(!(isInBounds(src_coordinates)) || !(isInBounds(dst_coordinates)))
@@ -75,15 +75,12 @@ namespace mtm
             throw CellEmpty();
         }
         if(!board(src_coordinates.row, src_coordinates.col)->
-        isInAttackRange(GridPoint::distance(src_coordinates, dst_coordinates)))
+        isInAttackRange(src_coordinates, dst_coordinates))
         {
             throw OutOfRange();
         }
         board(src_coordinates.row, src_coordinates.col)->attack(board, src_coordinates, dst_coordinates);
-        if(board(dst_coordinates.row, dst_coordinates.col)->getHealth() <= 0)
-        {
-            board(dst_coordinates.row, dst_coordinates.col) = nullptr;
-        }
+        clearDeadCharacters();
     };
 
     void Game::reload(const GridPoint & coordinates)
@@ -146,6 +143,21 @@ namespace mtm
         return true;
     }
     
+    /* Private Methods */
+    void Game::clearDeadCharacters() noexcept
+    {
+        for(std::shared_ptr<Character>& cell : board)
+        {
+            if(cell != nullptr)
+            {
+                if(cell->getHealth() <= 0)
+                {
+                    cell = nullptr;
+                }
+            }
+        }
+    }
+
     /**************************************/
     /*    Function definition section     */
     /**************************************/

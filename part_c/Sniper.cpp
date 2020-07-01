@@ -19,8 +19,9 @@ namespace mtm
         ammo += RELOAD_AMMOUNT;
     }
 
-    bool Sniper::isInAttackRange(int distance) const noexcept
+    bool Sniper::isInAttackRange(const GridPoint& src_coordinates , const GridPoint& dst_coordinates) const noexcept
     {
+        int distance = GridPoint::distance(src_coordinates, dst_coordinates);
         if(distance > getRange() || distance < static_cast<int>(std::ceil(static_cast<double>(getRange())/2)))
         {
             return false;
@@ -46,19 +47,21 @@ namespace mtm
         return true;
     }
 
-    void Sniper::attack(Matrix<std::shared_ptr<Character>>board, const GridPoint src_coordinates , const GridPoint dst_coordinates)
+    void Sniper::attack(Matrix<std::shared_ptr<Character>>board, const GridPoint& src_coordinates , const GridPoint& dst_coordinates)
     {
+        std::shared_ptr<Character> target_ptr = board(dst_coordinates.row, dst_coordinates.col);
         if(!board(src_coordinates.row, src_coordinates.col)->hasEnoughAmmo())
         {
             throw OutOfAmmo();
         }
-        if(board(dst_coordinates.row, dst_coordinates.col)->getTeam() == getTeam())
+        if(target_ptr == nullptr || target_ptr->getTeam() == getTeam())
         {
             throw IllegalTarget();
         }
-        units_t damage = combo_attack_count++ ==(MAX_COMBO - 1)? getPower()*CRITICAL_MULTIPLIER : getPower();
-        board(dst_coordinates.row, dst_coordinates.col)->setHealth(getHealth() - damage);
+        units_t damage = (combo_attack_count++ == (MAX_COMBO - 1))? getPower()*CRITICAL_MULTIPLIER : getPower();
+        target_ptr->setHealth(target_ptr->getHealth() - damage);
         combo_attack_count %= MAX_COMBO;
+        ammo -= AMMO_COST;
     }
 
     std::shared_ptr<Character> Sniper::clone() const 

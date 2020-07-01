@@ -24,6 +24,13 @@ namespace mtm
         Matrix<std::shared_ptr<Character>> board;
         bool isInBounds(const GridPoint& coordinates) const;
         static const char EMPTY_CELL = ' ';
+
+        /* Private Methods */
+        /*
+         * Checks the entire board for dead characters, and
+         * removes them from the game.
+         */
+        void clearDeadCharacters() noexcept;
     public:
         /**************************************/
         /*     C'tors and D'tors section      */
